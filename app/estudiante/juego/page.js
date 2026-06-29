@@ -401,16 +401,16 @@ export default function GamePage() {
 
           {/* Visual: emojis (mate grado 1-2) */}
           {currentQuestion.visual.type === "emoji" && (
-            <div className={`flex flex-wrap justify-center items-center gap-3 bg-[#FFF8E7] border-4 border-[#FFD740] rounded-3xl px-6 py-5 shadow-lg w-full max-w-xl ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
-              <div className="flex flex-wrap justify-center gap-1">
+            <div className={`flex flex-row flex-wrap justify-center items-center gap-4 bg-[#FFF8E7] border-4 border-[#FFD740] rounded-3xl px-6 py-6 shadow-lg w-full max-w-2xl ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
+              <div className="flex flex-row flex-wrap justify-center gap-2">
                 {Array.from({ length: currentQuestion.visual.a }, (_, i) => (
-                  <span key={i} className="text-5xl md:text-6xl select-none drop-shadow">{currentQuestion.visual.emoji}</span>
+                  <span key={i} className="select-none drop-shadow leading-none" style={{ fontSize: 100 }}>{currentQuestion.visual.emoji}</span>
                 ))}
               </div>
-              <span className="text-3xl font-black text-[#c49400] mx-1">+</span>
-              <div className="flex flex-wrap justify-center gap-1">
+              <span className="font-black text-[#c49400] leading-none" style={{ fontSize: 64 }}>+</span>
+              <div className="flex flex-row flex-wrap justify-center gap-2">
                 {Array.from({ length: currentQuestion.visual.b }, (_, i) => (
-                  <span key={i} className="text-5xl md:text-6xl select-none drop-shadow">{currentQuestion.visual.emoji}</span>
+                  <span key={i} className="select-none drop-shadow leading-none" style={{ fontSize: 100 }}>{currentQuestion.visual.emoji}</span>
                 ))}
               </div>
             </div>
@@ -439,8 +439,8 @@ export default function GamePage() {
             </div>
           )}
 
-          {/* Botones de respuesta — 4 colores fijos */}
-          <div className="grid grid-cols-2 gap-3 md:gap-4 w-full max-w-xl">
+          {/* Botones de respuesta — cuadrados 160×160 */}
+          <div className="grid grid-cols-2 gap-4">
             {currentQuestion.answers.map((ans, i) => {
               const c = BTN_COLORS[i % 4];
               let extraClass = "";
@@ -456,12 +456,14 @@ export default function GamePage() {
               return (
                 <button
                   key={i}
-                  className={`w-full flex items-center justify-center font-bold text-xl md:text-2xl rounded-2xl cursor-pointer transition-all relative overflow-hidden px-3 py-6 md:py-8 text-center leading-snug select-none ${extraClass}`}
+                  className={`flex items-center justify-center font-black rounded-2xl cursor-pointer transition-all relative select-none ${extraClass}`}
                   style={{
+                    width: 160,
+                    height: 160,
+                    fontSize: 60,
                     backgroundColor: c.bg,
                     color: c.text,
                     boxShadow: `0 6px 0 ${c.shadow}`,
-                    minHeight: "5rem",
                   }}
                   onClick={(e) => handleAnswer(ans.correct, i, e)}
                 >
