@@ -25,7 +25,7 @@ export default function StudentMenu() {
       const result = await supabase
         .from("progreso")
         .select("curso, progreso")
-        .eq("user_id", userId);
+        .eq("usuario_id", userId);
       console.log("[MAKI] fetchProgreso resultado →", result);
       if (result.data) {
         const map = {};
@@ -135,7 +135,7 @@ export default function StudentMenu() {
               </div>
               {/* emoji grande */}
               <div className="flex justify-center py-2">
-                <span className="text-[7rem] group-hover:scale-110 transition-transform duration-300 drop-shadow-md select-none leading-none">🔢</span>
+                <img src="https://cdn-icons-png.flaticon.com/512/2977/2977807.png" alt="Matemáticas" className="w-32 h-32 object-contain mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-md" />
               </div>
               <div className="text-center">
                 <h3 className="font-headline-md text-[22px] font-bold text-on-background">Matemáticas Mágicas</h3>
@@ -180,7 +180,7 @@ export default function StudentMenu() {
                 <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> +30
               </div>
               <div className="flex justify-center py-2">
-                <span className="text-[7rem] group-hover:scale-110 transition-transform duration-300 drop-shadow-md select-none leading-none">📚</span>
+                <img src="https://cdn-icons-png.flaticon.com/512/3389/3389081.png" alt="Palabras" className="w-32 h-32 object-contain mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-md" />
               </div>
               <div className="text-center">
                 <h3 className="font-headline-md text-[22px] font-bold text-on-background">Palabras Amigas</h3>
@@ -223,7 +223,7 @@ export default function StudentMenu() {
                 <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> +40
               </div>
               <div className="flex justify-center py-2">
-                <span className="text-[7rem] group-hover:scale-110 transition-transform duration-300 drop-shadow-md select-none leading-none">🔬</span>
+                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991231.png" alt="Ciencias" className="w-32 h-32 object-contain mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-md" />
               </div>
               <div className="text-center">
                 <h3 className="font-headline-md text-[22px] font-bold text-on-background">Ciencias Naturales</h3>
@@ -267,7 +267,7 @@ export default function StudentMenu() {
                 <span className="font-body-lg text-outline bg-white px-4 py-2 rounded-full shadow-sm">Alcanza Nivel 6</span>
               </div>
               <div className="flex justify-center py-2">
-                <span className="text-[7rem] drop-shadow-md select-none leading-none">🌳</span>
+                <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" alt="Tierra" className="w-32 h-32 object-contain mx-auto mb-4 grayscale drop-shadow-md" />
               </div>
               <div className="text-center">
                 <h3 className="font-headline-md text-[22px] font-bold text-on-background">Cuidemos la Tierra</h3>

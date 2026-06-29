@@ -75,28 +75,28 @@ function generateMateQuestions(grado) {
 
 // ── Lenguaje ──────────────────────────────────────────────────────────────────
 const LENGUAJE_BANK = [
-  { q: "¿Cuál es la primera letra de MANZANA?", w: "🍎  MANZANA",  ok: "M", no: ["A", "N", "Z"] },
-  { q: "¿Qué letra falta en C_SA?",              w: "C _ S A",      ok: "A", no: ["O", "U", "I"] },
-  { q: "¿Cuántas letras tiene GATO?",            w: "🐱  GATO",     ok: "4", no: ["3", "5", "6"] },
-  { q: "¿Cuál es la última letra de PERRO?",     w: "🐶  PERRO",    ok: "O", no: ["R", "E", "P"] },
-  { q: "¿Qué letra falta en PE_RO?",             w: "P E _ R O",    ok: "R", no: ["A", "S", "T"] },
-  { q: "¿Cuál es la primera letra de OSO?",      w: "🐻  OSO",      ok: "O", no: ["S", "A", "U"] },
-  { q: "¿Cuántas letras tiene LIBRO?",           w: "📚  LIBRO",    ok: "5", no: ["4", "6", "3"] },
-  { q: "¿Qué letra falta en S_L?",               w: "☀️   S _ L",   ok: "O", no: ["A", "I", "E"] },
-  { q: "¿Cuál es la primera letra de ELEFANTE?", w: "🐘  ELEFANTE", ok: "E", no: ["L", "F", "A"] },
-  { q: "¿Cuántas letras tiene LUNA?",            w: "🌙  LUNA",     ok: "4", no: ["3", "5", "2"] },
-  { q: "¿Qué letra falta en AG_A?",              w: "💧  AG _ A",   ok: "U", no: ["O", "A", "I"] },
-  { q: "¿Cuál es la última letra de ÁRBOL?",     w: "🌳  ÁRBOL",    ok: "L", no: ["O", "B", "R"] },
-  { q: "¿Cuántas letras tiene PATO?",            w: "🦆  PATO",     ok: "4", no: ["3", "5", "6"] },
-  { q: "¿Qué letra falta en P_Z?",               w: "🐟  P _ Z",    ok: "E", no: ["A", "I", "O"] },
-  { q: "¿Cuál es la primera letra de FLOR?",     w: "🌸  FLOR",     ok: "F", no: ["L", "O", "R"] },
+  { q: "¿Cuál es la primera letra de MANZANA?", emoji: "🍎", word: "MANZANA",  ok: "M", no: ["A", "N", "Z"] },
+  { q: "¿Qué letra falta en C_SA?",              emoji: "🏠", word: "C_SA",     ok: "A", no: ["O", "U", "I"] },
+  { q: "¿Cuántas letras tiene GATO?",            emoji: "🐱", word: "GATO",     ok: "4", no: ["3", "5", "6"] },
+  { q: "¿Cuál es la última letra de PERRO?",     emoji: "🐶", word: "PERRO",    ok: "O", no: ["R", "E", "P"] },
+  { q: "¿Qué letra falta en PE_RO?",             emoji: "🐶", word: "PE_RO",    ok: "R", no: ["A", "S", "T"] },
+  { q: "¿Cuál es la primera letra de OSO?",      emoji: "🐻", word: "OSO",      ok: "O", no: ["S", "A", "U"] },
+  { q: "¿Cuántas letras tiene LIBRO?",           emoji: "📚", word: "LIBRO",    ok: "5", no: ["4", "6", "3"] },
+  { q: "¿Qué letra falta en S_L?",               emoji: "☀️", word: "S_L",      ok: "O", no: ["A", "I", "E"] },
+  { q: "¿Cuál es la primera letra de ELEFANTE?", emoji: "🐘", word: "ELEFANTE", ok: "E", no: ["L", "F", "A"] },
+  { q: "¿Cuántas letras tiene LUNA?",            emoji: "🌙", word: "LUNA",     ok: "4", no: ["3", "5", "2"] },
+  { q: "¿Qué letra falta en AG_A?",              emoji: "💧", word: "AG_A",     ok: "U", no: ["O", "A", "I"] },
+  { q: "¿Cuál es la última letra de ÁRBOL?",     emoji: "🌳", word: "ÁRBOL",    ok: "L", no: ["O", "B", "R"] },
+  { q: "¿Cuántas letras tiene PATO?",            emoji: "🦆", word: "PATO",     ok: "4", no: ["3", "5", "6"] },
+  { q: "¿Qué letra falta en P_Z?",               emoji: "🐟", word: "P_Z",      ok: "E", no: ["A", "I", "O"] },
+  { q: "¿Cuál es la primera letra de FLOR?",     emoji: "🌸", word: "FLOR",     ok: "F", no: ["L", "O", "R"] },
 ];
 
 function generateLenguajeQuestions() {
   const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
   return shuffle(LENGUAJE_BANK).slice(0, TOTAL_QUESTIONS).map((item) => ({
     question: item.q,
-    visual: { type: "word", word: item.w, curso: "lenguaje" },
+    visual: { type: "letras", emoji: item.emoji, word: item.word },
     answers: shuffle([
       { label: item.ok, correct: true },
       ...item.no.map((a) => ({ label: a, correct: false })),
@@ -231,8 +231,8 @@ export default function GamePage() {
     const progresoVal = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
     try {
       const result = await supabase.from("progreso").upsert(
-        { user_id: userId, curso, progreso: progresoVal },
-        { onConflict: "user_id,curso" }
+        { usuario_id: userId, curso, progreso: progresoVal },
+        { onConflict: "usuario_id,curso" }
       );
       console.log("[MAKI] saveProgress OK →", result);
     } catch (err) {
@@ -334,8 +334,64 @@ export default function GamePage() {
         </div>
       </div>
 
-      {/* ── Game Area ── */}
-      {currentQuestion && (
+      {/* ── Game Area: layout horizontal para lenguaje ── */}
+      {currentQuestion && currentQuestion.visual.type === "letras" ? (
+        <main className="flex-1 flex flex-row items-stretch overflow-hidden">
+          {/* LEFT: emoji gigante */}
+          <div className="w-[40%] shrink-0 flex items-center justify-center bg-[#e8f4ff] border-r-4 border-[#29abd4]">
+            <span className="text-[10rem] leading-none select-none">{currentQuestion.visual.emoji}</span>
+          </div>
+          {/* RIGHT: pregunta + letras + botones */}
+          <div className="w-[60%] min-w-0 flex flex-col items-center justify-center gap-6 px-4 py-6 overflow-y-auto">
+            <h1 className="text-2xl md:text-3xl font-bold text-on-background text-center leading-snug">
+              {currentQuestion.question}
+            </h1>
+            <div className="flex flex-wrap justify-center gap-2">
+              {currentQuestion.visual.word.split("").map((ch, i) => (
+                <div key={i}
+                  className="flex items-center justify-center rounded-xl font-black text-5xl select-none"
+                  style={{
+                    width: 80, height: 80,
+                    backgroundColor: ch === "_" ? "#FFD740" : "#29abd4",
+                    color: ch === "_" ? "#4a3000" : "white",
+                    boxShadow: "0 4px 0 rgba(0,0,0,0.2)",
+                  }}>
+                  {ch === "_" ? "?" : ch}
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {currentQuestion.answers.map((ans, i) => {
+                const c = BTN_COLORS[i % 4];
+                let extraClass = "";
+                if (selectedAnswer === "correct" && ans.correct) {
+                  extraClass = "ring-4 ring-white/80 ring-offset-2 brightness-110";
+                } else if (selectedAnswer === "incorrect" && i === clickedIdx) {
+                  extraClass = "animate-[arShake_0.4s_ease-in-out] opacity-70";
+                } else if (selectedAnswer !== null) {
+                  extraClass = "opacity-60";
+                }
+                return (
+                  <button key={i}
+                    className={`flex items-center justify-center font-black text-4xl md:text-5xl rounded-2xl cursor-pointer transition-all relative select-none ${extraClass}`}
+                    style={{
+                      width: 150, height: 150,
+                      backgroundColor: c.bg, color: c.text,
+                      boxShadow: `0 6px 0 ${c.shadow}`,
+                    }}
+                    onClick={(e) => handleAnswer(ans.correct, i, e)}>
+                    <span className="relative z-10">{ans.label}</span>
+                    {selectedAnswer === "correct" && ans.correct && (
+                      <span className="absolute top-2 right-3 text-2xl">✓</span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </main>
+      ) : currentQuestion ? (
+        /* ── Game Area: layout vertical para mate y ciencias ── */
         <main className="flex-1 flex flex-col items-center justify-center px-4 py-4 gap-5 overflow-y-auto">
 
           {/* Pregunta */}
@@ -368,7 +424,7 @@ export default function GamePage() {
             </div>
           )}
 
-          {/* Visual: palabra/ciencias */}
+          {/* Visual: ciencias */}
           {currentQuestion.visual.type === "word" && (
             <div
               className={`w-full max-w-xl rounded-3xl px-8 py-7 text-center shadow-xl select-none ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}
@@ -387,7 +443,6 @@ export default function GamePage() {
           <div className="grid grid-cols-2 gap-3 md:gap-4 w-full max-w-xl">
             {currentQuestion.answers.map((ans, i) => {
               const c = BTN_COLORS[i % 4];
-              let extra = {};
               let extraClass = "";
 
               if (selectedAnswer === "correct" && ans.correct) {
@@ -420,7 +475,7 @@ export default function GamePage() {
           </div>
 
         </main>
-      )}
+      ) : null}
 
       {/* ── Celebration Modal ── */}
       {showModal && (
