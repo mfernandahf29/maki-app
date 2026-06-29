@@ -330,7 +330,7 @@ export default function GamePage() {
 
       {/* Celebration Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center backdrop-blur-sm" style={{ padding: '12px' }}>
           {/* Confetti */}
           {confetti.map((p) => (
             <div
@@ -355,25 +355,35 @@ export default function GamePage() {
           ))}
 
           {/* Modal Card */}
-          <div className="bg-white rounded-[2rem] p-8 md:p-12 max-w-lg w-full flex flex-col items-center text-center shadow-2xl relative z-10 animate-[popInBig_0.5s_cubic-bezier(0.34,1.56,0.64,1)_forwards] max-h-[95vh] overflow-y-auto">
-            <div className="text-[4.5rem] mb-2 animate-floating select-none">🦊</div>
-            <div className="text-[2.5rem] mb-4 select-none">🎉🎊🎉</div>
-            <h2 className="font-headline-lg text-[34px] md:text-[40px] text-primary mb-3">
+          <div
+            className="bg-white rounded-[2rem] w-full flex flex-col items-center text-center shadow-2xl relative z-10 overflow-y-auto"
+            style={{
+              minWidth: '320px',
+              maxWidth: '520px',
+              maxHeight: '92vh',
+              padding: '32px 28px',
+              animation: 'popInBig 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards',
+            }}
+          >
+            <div className="text-[4rem] mb-1 animate-floating select-none">🦊</div>
+            <div className="text-[2.2rem] mb-3 select-none">🎉🎊🎉</div>
+            <h2 className="font-headline-lg text-primary mb-2" style={{ fontSize: '2rem', lineHeight: '1.2' }}>
               ¡Lo lograste!
             </h2>
-            <p className="font-body-lg text-[18px] text-on-surface-variant mb-6">
+            <p className="text-on-surface-variant mb-5" style={{ fontSize: '1rem', lineHeight: '1.5' }}>
               Completaste el juego con{" "}
-              <strong className="text-secondary text-[22px]">{stars}</strong>{" "}
+              <strong className="text-secondary" style={{ fontSize: '1.2rem' }}>{stars}</strong>{" "}
               {stars === 1 ? "respuesta correcta" : "respuestas correctas"}.
             </p>
 
             {/* Stars */}
-            <div className="flex gap-3 mb-8">
+            <div className="flex gap-3 mb-6">
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
-                  className="material-symbols-outlined text-[3.5rem] text-secondary-container"
+                  className="material-symbols-outlined text-secondary-container"
                   style={{
+                    fontSize: '3rem',
                     fontVariationSettings: "'FILL' 1",
                     animation: `popIn 0.4s ${i * 0.15}s cubic-bezier(0.34,1.56,0.64,1) both`,
                   }}
@@ -384,15 +394,24 @@ export default function GamePage() {
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-col gap-4 w-full">
-              <Link href="/estudiante/menu" className="w-full">
-                <button className="w-full bg-primary text-on-primary font-headline-md text-[20px] py-5 rounded-2xl shadow-[0_6px_0_rgba(0,83,110,0.4)] hover:-translate-y-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-3">
+            <div className="flex flex-col gap-3 w-full">
+              <Link href="/estudiante/menu" className="w-full block">
+                <button
+                  className="w-full bg-primary text-on-primary rounded-2xl flex items-center justify-center gap-2 transition-all hover:-translate-y-1 active:translate-y-1"
+                  style={{
+                    fontSize: '1.15rem',
+                    fontWeight: 700,
+                    padding: '18px 16px',
+                    boxShadow: '0 6px 0 rgba(0,83,110,0.4)',
+                  }}
+                >
                   🏠 Volver al Menú
                 </button>
               </Link>
               <button
                 onClick={handleRestart}
-                className="w-full bg-surface-container-high text-primary font-body-lg text-[18px] py-4 rounded-2xl border-2 border-primary/20 hover:bg-primary-container/20 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-surface-container-high text-primary rounded-2xl border-2 border-primary/20 hover:bg-primary-container/20 transition-colors flex items-center justify-center gap-2"
+                style={{ fontSize: '1rem', padding: '14px 16px' }}
               >
                 🔄 Jugar de nuevo
               </button>
