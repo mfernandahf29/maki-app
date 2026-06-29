@@ -128,158 +128,170 @@ export default function StudentMenu() {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
 
             {/* ── Matemáticas Mágicas ── */}
-            <article className="bg-white/85 backdrop-blur-md rounded-[2rem] p-8 flex flex-col gap-5 relative overflow-hidden group animate-pop-in shadow-lg"
+            <article className="bg-white rounded-[2rem] overflow-hidden flex flex-col group animate-pop-in shadow-lg hover:-translate-y-2 hover:shadow-[0_20px_48px_rgba(254,178,70,0.35)] transition-all duration-300"
               style={{ animationDelay: "0.2s", border: "4px solid #feb246" }}>
-              <div className="absolute top-4 right-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-lg flex items-center gap-1 shadow-sm">
-                <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> +50
+              {/* Cabecera degradada amarillo/naranja */}
+              <div className="relative flex items-center justify-center py-8" style={{ background: "linear-gradient(160deg,#FFF3C4 0%,#FFD740 100%)" }}>
+                <span className="text-[6rem] leading-none select-none group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">🔢</span>
+                <div className="absolute top-3 right-3 bg-white/80 text-[#7c5200] px-2.5 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-sm">⭐ +50</div>
               </div>
-              {/* emoji grande */}
-              <div className="flex justify-center py-2">
-                <img src="https://cdn-icons-png.flaticon.com/512/2977/2977807.png" alt="Matemáticas" className="w-32 h-32 object-contain mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-md" />
-              </div>
-              <div className="text-center">
-                <h3 className="font-headline-md text-[22px] font-bold text-on-background">Matemáticas Mágicas</h3>
-                <p className="font-body-md text-on-surface-variant text-sm mt-1">Aprende a sumar con MAKI.</p>
-              </div>
-              {/* Progreso */}
-              <div className="w-full space-y-1.5">
-                <div className="flex justify-between font-label-lg text-sm">
-                  <span className="text-primary font-bold">Progreso</span>
-                  <span className="text-primary font-bold">{pctLabel("mate")}</span>
+              {/* Contenido */}
+              <div className="p-6 flex flex-col gap-4 flex-1">
+                <div className="text-center">
+                  <h3 className="font-headline-md text-[22px] font-bold text-on-background">Matemáticas Mágicas</h3>
+                  <p className="font-body-md text-on-surface-variant text-sm mt-1">Aprende a sumar con MAKI.</p>
                 </div>
-                <div className="h-3 w-full bg-surface-variant rounded-full overflow-hidden">
-                  <div className="h-full bg-secondary-container rounded-full transition-all duration-700" style={{ width: pctWidth("mate") }} />
+                <div className="w-full space-y-1.5">
+                  <div className="flex justify-between text-sm font-bold">
+                    <span className="text-[#b37000]">Progreso</span>
+                    <span className="text-[#b37000]">{pctLabel("mate")}</span>
+                  </div>
+                  <div className="h-3 w-full bg-[#FFF3C4] rounded-full overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-700" style={{ width: pctWidth("mate"), backgroundColor: "#FFB300" }} />
+                  </div>
                 </div>
-              </div>
-              {/* Botones */}
-              <div className="flex flex-col gap-3 mt-auto pt-2">
-                <Link href="/estudiante/juego?curso=mate&tipo=adivina" className="w-full">
-                  <button className="w-full bg-secondary-container text-on-secondary-container font-body-lg px-4 py-4 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-1 transition-transform shadow-[0_4px_0_0_rgba(0,0,0,0.18)] active:translate-y-1 active:shadow-none text-[1rem] font-semibold">
-                    🎯 Adivina
-                  </button>
-                </Link>
-                <div className="grid grid-cols-2 gap-3">
-                  <Link href="/estudiante/juego?curso=mate&tipo=memoria">
-                    <button className="w-full bg-[#29abd4]/15 text-[#006884] border-2 border-[#29abd4]/40 font-body-md px-2 py-4 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.12)] active:translate-y-1 active:shadow-none text-[0.95rem] font-semibold">
-                      🧠 Memoria
+                <div className="flex flex-col gap-3 mt-auto pt-1">
+                  <Link href="/estudiante/juego?curso=mate&tipo=adivina" className="w-full">
+                    <button className="w-full text-white font-bold text-[1rem] px-4 py-4 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_4px_0_0_rgba(0,0,0,0.22)] active:shadow-none"
+                      style={{ backgroundColor: "#F59E0B" }}>
+                      🎯 ¡Adivina!
                     </button>
                   </Link>
-                  <Link href="/estudiante/juego?curso=mate&tipo=completa">
-                    <button className="w-full bg-[#842bd2]/12 text-[#842bd2] border-2 border-[#842bd2]/30 font-body-md px-2 py-4 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.12)] active:translate-y-1 active:shadow-none text-[0.95rem] font-semibold">
-                      🔤 Completa
-                    </button>
-                  </Link>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link href="/estudiante/juego?curso=mate&tipo=memoria">
+                      <button className="w-full text-white font-bold text-[0.9rem] px-2 py-3.5 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.2)] active:shadow-none"
+                        style={{ backgroundColor: "#06B6D4" }}>
+                        🧠 Memoria
+                      </button>
+                    </Link>
+                    <Link href="/estudiante/juego?curso=mate&tipo=completa">
+                      <button className="w-full text-white font-bold text-[0.9rem] px-2 py-3.5 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.2)] active:shadow-none"
+                        style={{ backgroundColor: "#8B5CF6" }}>
+                        🔤 Completa
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </article>
 
             {/* ── Palabras Amigas ── */}
-            <article className="bg-white/85 backdrop-blur-md rounded-[2rem] p-8 flex flex-col gap-5 relative overflow-hidden group animate-pop-in shadow-lg"
+            <article className="bg-white rounded-[2rem] overflow-hidden flex flex-col group animate-pop-in shadow-lg hover:-translate-y-2 hover:shadow-[0_20px_48px_rgba(41,171,212,0.35)] transition-all duration-300"
               style={{ animationDelay: "0.3s", border: "4px solid #29abd4" }}>
-              <div className="absolute top-4 right-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-lg flex items-center gap-1 shadow-sm">
-                <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> +30
+              {/* Cabecera degradada azul/celeste */}
+              <div className="relative flex items-center justify-center py-8" style={{ background: "linear-gradient(160deg,#DBEEFF 0%,#7DD3FC 100%)" }}>
+                <span className="text-[6rem] leading-none select-none group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">📚</span>
+                <div className="absolute top-3 right-3 bg-white/80 text-[#1a5b7a] px-2.5 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-sm">⭐ +30</div>
               </div>
-              <div className="flex justify-center py-2">
-                <img src="https://cdn-icons-png.flaticon.com/512/3389/3389081.png" alt="Palabras" className="w-32 h-32 object-contain mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-md" />
-              </div>
-              <div className="text-center">
-                <h3 className="font-headline-md text-[22px] font-bold text-on-background">Palabras Amigas</h3>
-                <p className="font-body-md text-on-surface-variant text-sm mt-1">Descubre nuevas letras y sonidos.</p>
-              </div>
-              <div className="w-full space-y-1.5">
-                <div className="flex justify-between font-label-lg text-sm">
-                  <span className="text-primary font-bold">Progreso</span>
-                  <span className="text-primary font-bold">{pctLabel("lenguaje")}</span>
+              <div className="p-6 flex flex-col gap-4 flex-1">
+                <div className="text-center">
+                  <h3 className="font-headline-md text-[22px] font-bold text-on-background">Palabras Amigas</h3>
+                  <p className="font-body-md text-on-surface-variant text-sm mt-1">Descubre nuevas letras y sonidos.</p>
                 </div>
-                <div className="h-3 w-full bg-surface-variant rounded-full overflow-hidden">
-                  <div className="h-full bg-primary-container rounded-full transition-all duration-700" style={{ width: pctWidth("lenguaje") }} />
+                <div className="w-full space-y-1.5">
+                  <div className="flex justify-between text-sm font-bold">
+                    <span className="text-[#1a5b7a]">Progreso</span>
+                    <span className="text-[#1a5b7a]">{pctLabel("lenguaje")}</span>
+                  </div>
+                  <div className="h-3 w-full bg-[#DBEEFF] rounded-full overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-700" style={{ width: pctWidth("lenguaje"), backgroundColor: "#29abd4" }} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-3 mt-auto pt-2">
-                <Link href="/estudiante/juego?curso=lenguaje&tipo=adivina" className="w-full">
-                  <button className="w-full bg-primary-container text-on-primary-container font-body-lg px-4 py-4 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-1 transition-transform shadow-[0_4px_0_0_rgba(0,0,0,0.18)] active:translate-y-1 active:shadow-none text-[1rem] font-semibold">
-                    🎯 Adivina
-                  </button>
-                </Link>
-                <div className="grid grid-cols-2 gap-3">
-                  <Link href="/estudiante/juego?curso=lenguaje&tipo=memoria">
-                    <button className="w-full bg-[#29abd4]/15 text-[#006884] border-2 border-[#29abd4]/40 font-body-md px-2 py-4 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.12)] active:translate-y-1 active:shadow-none text-[0.95rem] font-semibold">
-                      🧠 Memoria
+                <div className="flex flex-col gap-3 mt-auto pt-1">
+                  <Link href="/estudiante/juego?curso=lenguaje&tipo=adivina" className="w-full">
+                    <button className="w-full text-white font-bold text-[1rem] px-4 py-4 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_4px_0_0_rgba(0,0,0,0.22)] active:shadow-none"
+                      style={{ backgroundColor: "#0EA5E9" }}>
+                      🎯 ¡Adivina!
                     </button>
                   </Link>
-                  <Link href="/estudiante/juego?curso=lenguaje&tipo=completa">
-                    <button className="w-full bg-[#842bd2]/12 text-[#842bd2] border-2 border-[#842bd2]/30 font-body-md px-2 py-4 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.12)] active:translate-y-1 active:shadow-none text-[0.95rem] font-semibold">
-                      🔤 Completa
-                    </button>
-                  </Link>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link href="/estudiante/juego?curso=lenguaje&tipo=memoria">
+                      <button className="w-full text-white font-bold text-[0.9rem] px-2 py-3.5 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.2)] active:shadow-none"
+                        style={{ backgroundColor: "#06B6D4" }}>
+                        🧠 Memoria
+                      </button>
+                    </Link>
+                    <Link href="/estudiante/juego?curso=lenguaje&tipo=completa">
+                      <button className="w-full text-white font-bold text-[0.9rem] px-2 py-3.5 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.2)] active:shadow-none"
+                        style={{ backgroundColor: "#8B5CF6" }}>
+                        🔤 Completa
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </article>
 
-            {/* ── Ciencias Naturales (nuevo) ── */}
-            <article className="bg-white/85 backdrop-blur-md rounded-[2rem] p-8 flex flex-col gap-5 relative overflow-hidden group animate-pop-in shadow-lg"
+            {/* ── Ciencias Naturales ── */}
+            <article className="bg-white rounded-[2rem] overflow-hidden flex flex-col group animate-pop-in shadow-lg hover:-translate-y-2 hover:shadow-[0_20px_48px_rgba(46,204,113,0.35)] transition-all duration-300"
               style={{ animationDelay: "0.4s", border: "4px solid #2ECC71" }}>
-              <div className="absolute top-4 right-4 bg-[#2ECC71]/20 text-[#1a9a52] px-3 py-1 rounded-full font-label-lg flex items-center gap-1 shadow-sm">
-                <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> +40
+              {/* Cabecera degradada verde/menta */}
+              <div className="relative flex items-center justify-center py-8" style={{ background: "linear-gradient(160deg,#D1FAE5 0%,#6EE7B7 100%)" }}>
+                <span className="text-[6rem] leading-none select-none group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">🔬</span>
+                <div className="absolute top-3 right-3 bg-white/80 text-[#1a5a3a] px-2.5 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-sm">⭐ +40</div>
               </div>
-              <div className="flex justify-center py-2">
-                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991231.png" alt="Ciencias" className="w-32 h-32 object-contain mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-md" />
-              </div>
-              <div className="text-center">
-                <h3 className="font-headline-md text-[22px] font-bold text-on-background">Ciencias Naturales</h3>
-                <p className="font-body-md text-on-surface-variant text-sm mt-1">Aprende sobre animales y plantas.</p>
-              </div>
-              <div className="w-full space-y-1.5">
-                <div className="flex justify-between font-label-lg text-sm">
-                  <span className="text-primary font-bold">Progreso</span>
-                  <span className="text-primary font-bold">{pctLabel("ciencias")}</span>
+              <div className="p-6 flex flex-col gap-4 flex-1">
+                <div className="text-center">
+                  <h3 className="font-headline-md text-[22px] font-bold text-on-background">Ciencias Naturales</h3>
+                  <p className="font-body-md text-on-surface-variant text-sm mt-1">Aprende sobre animales y plantas.</p>
                 </div>
-                <div className="h-3 w-full bg-surface-variant rounded-full overflow-hidden">
-                  <div className="h-full rounded-full transition-all duration-700" style={{ width: pctWidth("ciencias"), backgroundColor: "#2ECC71" }} />
+                <div className="w-full space-y-1.5">
+                  <div className="flex justify-between text-sm font-bold">
+                    <span className="text-[#1a5a3a]">Progreso</span>
+                    <span className="text-[#1a5a3a]">{pctLabel("ciencias")}</span>
+                  </div>
+                  <div className="h-3 w-full bg-[#D1FAE5] rounded-full overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-700" style={{ width: pctWidth("ciencias"), backgroundColor: "#2ECC71" }} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col gap-3 mt-auto pt-2">
-                <Link href="/estudiante/juego?curso=ciencias&tipo=adivina" className="w-full">
-                  <button className="w-full bg-[#2ECC71]/20 text-[#1a9a52] border-2 border-[#2ECC71]/40 font-body-lg px-4 py-4 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-1 transition-transform shadow-[0_4px_0_0_rgba(0,0,0,0.18)] active:translate-y-1 active:shadow-none text-[1rem] font-semibold">
-                    🎯 Adivina
-                  </button>
-                </Link>
-                <div className="grid grid-cols-2 gap-3">
-                  <Link href="/estudiante/juego?curso=ciencias&tipo=memoria">
-                    <button className="w-full bg-[#29abd4]/15 text-[#006884] border-2 border-[#29abd4]/40 font-body-md px-2 py-4 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.12)] active:translate-y-1 active:shadow-none text-[0.95rem] font-semibold">
-                      🧠 Memoria
+                <div className="flex flex-col gap-3 mt-auto pt-1">
+                  <Link href="/estudiante/juego?curso=ciencias&tipo=adivina" className="w-full">
+                    <button className="w-full text-white font-bold text-[1rem] px-4 py-4 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_4px_0_0_rgba(0,0,0,0.22)] active:shadow-none"
+                      style={{ backgroundColor: "#10B981" }}>
+                      🎯 ¡Adivina!
                     </button>
                   </Link>
-                  <Link href="/estudiante/juego?curso=ciencias&tipo=completa">
-                    <button className="w-full bg-[#842bd2]/12 text-[#842bd2] border-2 border-[#842bd2]/30 font-body-md px-2 py-4 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.12)] active:translate-y-1 active:shadow-none text-[0.95rem] font-semibold">
-                      🔤 Completa
-                    </button>
-                  </Link>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link href="/estudiante/juego?curso=ciencias&tipo=memoria">
+                      <button className="w-full text-white font-bold text-[0.9rem] px-2 py-3.5 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.2)] active:shadow-none"
+                        style={{ backgroundColor: "#06B6D4" }}>
+                        🧠 Memoria
+                      </button>
+                    </Link>
+                    <Link href="/estudiante/juego?curso=ciencias&tipo=completa">
+                      <button className="w-full text-white font-bold text-[0.9rem] px-2 py-3.5 rounded-xl flex items-center justify-center gap-1.5 hover:-translate-y-0.5 active:translate-y-1 transition-transform shadow-[0_3px_0_0_rgba(0,0,0,0.2)] active:shadow-none"
+                        style={{ backgroundColor: "#8B5CF6" }}>
+                        🔤 Completa
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </article>
 
             {/* ── Cuidemos la Tierra (bloqueado) ── */}
-            <article className="bg-white/85 backdrop-blur-md border-2 border-surface-variant rounded-[2rem] p-8 flex flex-col gap-5 relative overflow-hidden group opacity-75 grayscale-[40%] animate-pop-in shadow-lg"
-              style={{ animationDelay: "0.5s" }}>
-              <div className="absolute inset-0 bg-surface/50 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center gap-4">
+            <article className="bg-white rounded-[2rem] overflow-hidden flex flex-col group animate-pop-in shadow-lg opacity-70 grayscale-[50%] relative"
+              style={{ animationDelay: "0.5s", border: "4px solid #9CA3AF" }}>
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center gap-4">
                 <span className="material-symbols-outlined text-5xl text-outline">lock</span>
                 <span className="font-body-lg text-outline bg-white px-4 py-2 rounded-full shadow-sm">Alcanza Nivel 6</span>
               </div>
-              <div className="flex justify-center py-2">
-                <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" alt="Tierra" className="w-32 h-32 object-contain mx-auto mb-4 grayscale drop-shadow-md" />
+              <div className="relative flex items-center justify-center py-8" style={{ background: "linear-gradient(160deg,#F3F4F6 0%,#D1D5DB 100%)" }}>
+                <span className="text-[6rem] leading-none select-none drop-shadow-lg">🌳</span>
+                <div className="absolute top-3 right-3 bg-white/80 text-gray-500 px-2.5 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-sm">⭐ +60</div>
               </div>
-              <div className="text-center">
-                <h3 className="font-headline-md text-[22px] font-bold text-on-background">Cuidemos la Tierra</h3>
-                <p className="font-body-md text-on-surface-variant text-sm mt-1">Conoce a los animales y plantas.</p>
-              </div>
-              <div className="w-full space-y-1.5">
-                <div className="flex justify-between font-label-lg text-sm">
-                  <span className="text-outline font-bold">Progreso</span>
-                  <span className="text-outline font-bold">0%</span>
+              <div className="p-6 flex flex-col gap-4 flex-1">
+                <div className="text-center">
+                  <h3 className="font-headline-md text-[22px] font-bold text-on-background">Cuidemos la Tierra</h3>
+                  <p className="font-body-md text-on-surface-variant text-sm mt-1">Conoce a los animales y plantas.</p>
                 </div>
-                <div className="h-3 w-full bg-surface-variant rounded-full overflow-hidden">
-                  <div className="h-full bg-outline rounded-full" style={{ width: "0%" }} />
+                <div className="w-full space-y-1.5">
+                  <div className="flex justify-between text-sm font-bold text-outline">
+                    <span>Progreso</span><span>0%</span>
+                  </div>
+                  <div className="h-3 w-full bg-surface-variant rounded-full overflow-hidden">
+                    <div className="h-full bg-outline rounded-full" style={{ width: "0%" }} />
+                  </div>
                 </div>
               </div>
             </article>
