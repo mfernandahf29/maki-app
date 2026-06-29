@@ -20,17 +20,21 @@ export default function StudentMenu() {
   }, []);
 
   const fetchProgreso = async (userId) => {
+    console.log("[MAKI] fetchProgreso para userId:", userId);
     try {
-      const { data } = await supabase
+      const result = await supabase
         .from("progreso")
         .select("curso, progreso")
         .eq("user_id", userId);
-      if (data) {
+      console.log("[MAKI] fetchProgreso resultado →", result);
+      if (result.data) {
         const map = {};
-        data.forEach((row) => { map[row.curso] = row.progreso; });
+        result.data.forEach((row) => { map[row.curso] = row.progreso; });
         setProgresoData(map);
       }
-    } catch (_) {}
+    } catch (err) {
+      console.error("[MAKI] fetchProgreso ERROR →", err);
+    }
     setLoadingProgress(false);
   };
 
