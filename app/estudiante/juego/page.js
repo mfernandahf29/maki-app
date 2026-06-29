@@ -244,21 +244,20 @@ export default function GamePage() {
   };
 
   const saveProgress = async (userId, correctCount, curso) => {
-    console.log("[MAKI] saveProgress →", { userId, correctCount, curso });
+    console.log("[MAKI] usuario id:", userId, typeof userId);
     if (!userId) {
       console.warn("[MAKI] saveProgress: sin userId, abortando");
       return;
     }
     const progresoVal = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
-    try {
-      const result = await supabase.from("progreso").upsert(
-        { usuario_id: userId, curso, progreso: progresoVal },
-        { onConflict: "usuario_id,curso" }
-      );
-      console.log("[MAKI] saveProgress OK →", result);
-    } catch (err) {
-      console.error("[MAKI] saveProgress ERROR →", err);
-    }
+    const payload = { usuario_id: userId.toString(), curso, progreso: progresoVal };
+    console.log("[MAKI] enviando progreso:", payload);
+    const result = await supabase.from("progreso").upsert(
+      payload,
+      { onConflict: "usuario_id,curso" }
+    );
+    console.log("[MAKI] resultado data:", result.data);
+    console.log("[MAKI] resultado error:", result.error);
   };
 
   const advanceOrEnd = (starsCount) => {
