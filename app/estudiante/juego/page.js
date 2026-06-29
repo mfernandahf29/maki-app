@@ -106,28 +106,28 @@ function generateLenguajeQuestions() {
 
 // ── Ciencias ──────────────────────────────────────────────────────────────────
 const CIENCIAS_BANK = [
-  { q: "¿Qué animal vive en el agua?",                 w: "🌊  ¿En el agua?",     ok: "🐟 Pez",             no: ["🐕 Perro", "🐎 Caballo", "🐦 Pájaro"] },
-  { q: "¿Qué necesita una planta para crecer?",        w: "🌱  Planta",            ok: "☀️ Sol y agua",       no: ["❄️ Nieve", "🪨 Piedras", "🍬 Dulces"] },
-  { q: "¿Qué animal pone huevos?",                     w: "🥚  Huevos",            ok: "🐔 Gallina",          no: ["🐕 Perro", "🐱 Gato", "🐖 Cerdo"] },
-  { q: "¿Dónde vive un pez?",                          w: "🐟  Pez",               ok: "💧 Agua",             no: ["🏜️ Desierto", "🌳 Árbol", "🏔️ Montaña"] },
-  { q: "¿Qué parte de la planta está bajo la tierra?", w: "🌿  Planta",            ok: "🌱 Raíz",             no: ["🍃 Hoja", "🌸 Flor", "🌲 Tronco"] },
-  { q: "¿Qué animal tiene 4 patas y ladra?",           w: "🐾  ¿Quién soy?",      ok: "🐕 Perro",            no: ["🐟 Pez", "🐦 Pájaro", "🐛 Gusano"] },
-  { q: "¿Qué hace el Sol para las plantas?",           w: "☀️   Sol",              ok: "🌱 Las hace crecer",  no: ["❄️ Las congela", "💨 Las mueve", "🌧️ Las moja"] },
-  { q: "¿Qué animal puede volar?",                     w: "☁️   ¿Quién vuela?",   ok: "🦋 Mariposa",         no: ["🐢 Tortuga", "🐍 Serpiente", "🐸 Rana"] },
-  { q: "¿De dónde viene la leche?",                    w: "🥛  Leche",             ok: "🐄 Vaca",             no: ["🐟 Pez", "🐔 Gallina", "🐸 Rana"] },
-  { q: "¿Qué animal hace miel?",                       w: "🍯  Miel",              ok: "🐝 Abeja",            no: ["🦟 Mosquito", "🦋 Mariposa", "🕷️ Araña"] },
-  { q: "¿Qué tienen las plantas para captar la luz?",  w: "🌿  Planta",            ok: "🍃 Hojas",            no: ["🌸 Flores", "🌱 Raíces", "🌲 Tronco"] },
-  { q: "¿Qué animal tiene rayas negras y blancas?",    w: "🦓  ¿Quién soy?",      ok: "🦓 Cebra",            no: ["🐅 Tigre", "🐘 Elefante", "🦁 León"] },
-  { q: "¿Qué necesitamos beber todos los días?",       w: "💧  ¿Qué es?",         ok: "💧 Agua",             no: ["🧃 Jugo", "☕ Café", "🥤 Refresco"] },
-  { q: "¿Qué animal es el más grande del mar?",        w: "🌊  Mar",               ok: "🐋 Ballena",          no: ["🐟 Pez", "🦀 Cangrejo", "🐙 Pulpo"] },
-  { q: "¿De qué color son las hojas de los árboles?",  w: "🌳  Árbol",             ok: "💚 Verde",            no: ["❤️ Rojo", "💜 Morado", "🧡 Naranja"] },
+  { q: "¿Qué animal vive en el agua?",                 emoji: "🌊", ok: "🐟 Pez",            no: ["🐕 Perro", "🐎 Caballo", "🐦 Pájaro"] },
+  { q: "¿Qué necesita una planta para crecer?",        emoji: "🌱", ok: "☀️ Sol y agua",      no: ["❄️ Nieve", "🪨 Piedras", "🍬 Dulces"] },
+  { q: "¿Qué animal pone huevos?",                     emoji: "🥚", ok: "🐔 Gallina",         no: ["🐕 Perro", "🐱 Gato", "🐖 Cerdo"] },
+  { q: "¿Dónde vive un pez?",                          emoji: "🐟", ok: "💧 Agua",            no: ["🏜️ Desierto", "🌳 Árbol", "🏔️ Montaña"] },
+  { q: "¿Qué parte de la planta está bajo la tierra?", emoji: "🌿", ok: "🌱 Raíz",            no: ["🍃 Hoja", "🌸 Flor", "🌲 Tronco"] },
+  { q: "¿Qué animal tiene 4 patas y ladra?",           emoji: "🐾", ok: "🐕 Perro",           no: ["🐟 Pez", "🐦 Pájaro", "🐛 Gusano"] },
+  { q: "¿Qué hace el Sol para las plantas?",           emoji: "☀️", ok: "🌱 Las hace crecer", no: ["❄️ Las congela", "💨 Las mueve", "🌧️ Las moja"] },
+  { q: "¿Qué animal puede volar?",                     emoji: "☁️", ok: "🦋 Mariposa",        no: ["🐢 Tortuga", "🐍 Serpiente", "🐸 Rana"] },
+  { q: "¿De dónde viene la leche?",                    emoji: "🥛", ok: "🐄 Vaca",            no: ["🐟 Pez", "🐔 Gallina", "🐸 Rana"] },
+  { q: "¿Qué animal hace miel?",                       emoji: "🍯", ok: "🐝 Abeja",           no: ["🦟 Mosquito", "🦋 Mariposa", "🕷️ Araña"] },
+  { q: "¿Qué tienen las plantas para captar la luz?",  emoji: "🌿", ok: "🍃 Hojas",           no: ["🌸 Flores", "🌱 Raíces", "🌲 Tronco"] },
+  { q: "¿Qué animal tiene rayas negras y blancas?",    emoji: "🦓", ok: "🦓 Cebra",           no: ["🐅 Tigre", "🐘 Elefante", "🦁 León"] },
+  { q: "¿Qué necesitamos beber todos los días?",       emoji: "💧", ok: "💧 Agua",            no: ["🧃 Jugo", "☕ Café", "🥤 Refresco"] },
+  { q: "¿Qué animal es el más grande del mar?",        emoji: "🌊", ok: "🐋 Ballena",         no: ["🐟 Pez", "🦀 Cangrejo", "🐙 Pulpo"] },
+  { q: "¿De qué color son las hojas de los árboles?",  emoji: "🌳", ok: "💚 Verde",           no: ["❤️ Rojo", "💜 Morado", "🧡 Naranja"] },
 ];
 
 function generateCienciasQuestions() {
   const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
   return shuffle(CIENCIAS_BANK).slice(0, TOTAL_QUESTIONS).map((item) => ({
     question: item.q,
-    visual: { type: "word", word: item.w, curso: "ciencias" },
+    visual: { type: "ciencias_emoji", emoji: item.emoji },
     answers: shuffle([
       { label: item.ok, correct: true },
       ...item.no.map((a) => ({ label: a, correct: false })),
@@ -156,6 +156,26 @@ const buildConfetti = () =>
     size: 8 + (i % 4) * 3,
   }));
 
+const buildMiniConfetti = () =>
+  Array.from({ length: 22 }, (_, i) => ({
+    id: 2000 + i,
+    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+    left: `${(i / 22) * 100}%`,
+    delay: `${(i * 0.03).toFixed(2)}s`,
+    duration: `${0.55 + (i % 4) * 0.1}s`,
+    rotate: i * 53,
+    size: 6 + (i % 3) * 2,
+  }));
+
+const btnFontSize = (label) => {
+  const len = label.length;
+  if (len <= 2) return 56;
+  if (len <= 5) return 40;
+  if (len <= 9) return 28;
+  if (len <= 14) return 22;
+  return 17;
+};
+
 const CURSO_META = {
   mate:     { titulo: "Matemáticas Básicas" },
   lenguaje: { titulo: "Palabras Amigas" },
@@ -180,6 +200,7 @@ export default function GamePage() {
   const [isExploding, setIsExploding]       = useState(false);
   const [showModal, setShowModal]           = useState(false);
   const [confetti, setConfetti]             = useState([]);
+  const [questionConfetti, setQuestionConfetti] = useState([]);
   const [usuario, setUsuario]               = useState(null);
   const [cursoLabel, setCursoLabel]         = useState("Matemáticas Básicas");
   const [modeLabel, setModeLabel]           = useState("Adivina");
@@ -240,6 +261,20 @@ export default function GamePage() {
     }
   };
 
+  const advanceOrEnd = (starsCount) => {
+    if (currentIdx + 1 >= TOTAL_QUESTIONS) {
+      const pieces = buildConfetti();
+      setConfetti(pieces);
+      setTimeout(() => setConfetti([]), 3500);
+      setShowModal(true);
+      saveProgress(usuario?.id, starsCount, cursoKey);
+    } else {
+      setCurrentIdx((i) => i + 1);
+      setSelectedAnswer(null);
+      setClickedIdx(null);
+    }
+  };
+
   const handleAnswer = (isCorrect, ansIdx, e) => {
     if (selectedAnswer) return;
     setClickedIdx(ansIdx);
@@ -251,23 +286,16 @@ export default function GamePage() {
       setIsExploding(true);
       const newStars = stars + 1;
       setStars(newStars);
+      const mini = buildMiniConfetti();
+      setQuestionConfetti(mini);
+      setTimeout(() => setQuestionConfetti([]), 1200);
       setTimeout(() => {
         setIsExploding(false);
-        if (currentIdx + 1 >= TOTAL_QUESTIONS) {
-          const pieces = buildConfetti();
-          setConfetti(pieces);
-          setTimeout(() => setConfetti([]), 3500);
-          setShowModal(true);
-          saveProgress(usuario?.id, newStars, cursoKey);
-        } else {
-          setCurrentIdx((i) => i + 1);
-          setSelectedAnswer(null);
-          setClickedIdx(null);
-        }
+        advanceOrEnd(newStars);
       }, 1200);
     } else {
       setSelectedAnswer("incorrect");
-      setTimeout(() => { setSelectedAnswer(null); setClickedIdx(null); }, 600);
+      setTimeout(() => { advanceOrEnd(stars); }, 1500);
     }
   };
 
@@ -295,12 +323,17 @@ export default function GamePage() {
   return (
     <div className="bg-[#F7FCFF] text-on-surface font-body-md relative min-h-screen flex flex-col">
 
-      {/* Particles */}
+      {/* Particles + mini confetti */}
       <div className="fixed inset-0 pointer-events-none z-[9999]">
         {particles.map((p) => (
           <div key={p.id} className="absolute text-[22px] animate-[volarParticula_1s_ease-out_forwards]"
             style={{ left: p.x, top: p.y, "--tx": `${p.tx}px`, "--ty": `${p.ty}px` }}>
             {p.emoji}
+          </div>
+        ))}
+        {questionConfetti.map((p) => (
+          <div key={p.id} style={{ position: "absolute", top: "-20px", left: p.left, animation: `confettiFall ${p.duration} ${p.delay} ease-in forwards` }}>
+            <div style={{ width: p.size, height: p.size + 4, backgroundColor: p.color, borderRadius: 2, transform: `rotate(${p.rotate}deg)` }} />
           </div>
         ))}
       </div>
@@ -363,26 +396,28 @@ export default function GamePage() {
             <div className="grid grid-cols-2 gap-4">
               {currentQuestion.answers.map((ans, i) => {
                 const c = BTN_COLORS[i % 4];
-                let extraClass = "";
-                if (selectedAnswer === "correct" && ans.correct) {
-                  extraClass = "ring-4 ring-white/80 ring-offset-2 brightness-110";
-                } else if (selectedAnswer === "incorrect" && i === clickedIdx) {
-                  extraClass = "animate-[arShake_0.4s_ease-in-out] opacity-70";
-                } else if (selectedAnswer !== null) {
-                  extraClass = "opacity-60";
+                let bgColor = c.bg, textColor = c.text, shadowColor = c.shadow, extraClass = "";
+
+                if (selectedAnswer === "correct") {
+                  if (ans.correct) { bgColor = "#2ECC71"; textColor = "#fff"; shadowColor = "#1a9a52"; }
+                  else extraClass = "opacity-30";
+                } else if (selectedAnswer === "incorrect") {
+                  if (i === clickedIdx) { bgColor = "#E74C3C"; textColor = "#fff"; shadowColor = "#b83226"; extraClass = "animate-[arShake_0.4s_ease-in-out]"; }
+                  else if (ans.correct) { bgColor = "#2ECC71"; textColor = "#fff"; shadowColor = "#1a9a52"; }
+                  else extraClass = "opacity-30";
                 }
+
                 return (
                   <button key={i}
-                    className={`flex items-center justify-center font-black text-4xl md:text-5xl rounded-2xl cursor-pointer transition-all relative select-none ${extraClass}`}
-                    style={{
-                      width: 150, height: 150,
-                      backgroundColor: c.bg, color: c.text,
-                      boxShadow: `0 6px 0 ${c.shadow}`,
-                    }}
+                    className={`flex items-center justify-center font-black rounded-2xl cursor-pointer transition-all relative select-none px-2 ${extraClass}`}
+                    style={{ width: 150, height: 150, backgroundColor: bgColor, color: textColor, boxShadow: `0 6px 0 ${shadowColor}` }}
                     onClick={(e) => handleAnswer(ans.correct, i, e)}>
-                    <span className="relative z-10">{ans.label}</span>
-                    {selectedAnswer === "correct" && ans.correct && (
-                      <span className="absolute top-2 right-3 text-2xl">✓</span>
+                    {selectedAnswer === "correct" && ans.correct ? (
+                      <span className="text-5xl animate-[popIn_0.3s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">✅</span>
+                    ) : selectedAnswer === "incorrect" && i === clickedIdx ? (
+                      <span className="text-5xl">❌</span>
+                    ) : (
+                      <span className="text-center leading-tight break-words" style={{ fontSize: btnFontSize(ans.label) }}>{ans.label}</span>
                     )}
                   </button>
                 );
@@ -431,18 +466,10 @@ export default function GamePage() {
             </div>
           )}
 
-          {/* Visual: ciencias */}
-          {currentQuestion.visual.type === "word" && (
-            <div
-              className={`w-full max-w-xl rounded-3xl px-8 py-7 text-center shadow-xl select-none ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}
-              style={{
-                background: WORD_GRADIENT[currentQuestion.visual.curso] || WORD_GRADIENT.default,
-                border: "4px solid rgba(255,255,255,0.3)",
-              }}
-            >
-              <span className="text-4xl md:text-5xl font-black text-white tracking-widest leading-tight break-words">
-                {currentQuestion.visual.word}
-              </span>
+          {/* Visual: ciencias — emoji gigante */}
+          {currentQuestion.visual.type === "ciencias_emoji" && (
+            <div className={`flex items-center justify-center bg-[#e8fff2] border-4 border-[#2ECC71] rounded-3xl px-10 py-8 shadow-xl w-full max-w-xl select-none ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
+              <span className="leading-none" style={{ fontSize: 130 }}>{currentQuestion.visual.emoji}</span>
             </div>
           )}
 
@@ -450,33 +477,30 @@ export default function GamePage() {
           <div className="grid grid-cols-2 gap-4 mt-10">
             {currentQuestion.answers.map((ans, i) => {
               const c = BTN_COLORS[i % 4];
-              let extraClass = "";
+              let bgColor = c.bg, textColor = c.text, shadowColor = c.shadow, extraClass = "";
 
-              if (selectedAnswer === "correct" && ans.correct) {
-                extraClass = "ring-4 ring-white/80 ring-offset-2 brightness-110";
-              } else if (selectedAnswer === "incorrect" && i === clickedIdx) {
-                extraClass = "animate-[arShake_0.4s_ease-in-out] opacity-70";
-              } else if (selectedAnswer !== null) {
-                extraClass = "opacity-60";
+              if (selectedAnswer === "correct") {
+                if (ans.correct) { bgColor = "#2ECC71"; textColor = "#fff"; shadowColor = "#1a9a52"; }
+                else extraClass = "opacity-30";
+              } else if (selectedAnswer === "incorrect") {
+                if (i === clickedIdx) { bgColor = "#E74C3C"; textColor = "#fff"; shadowColor = "#b83226"; extraClass = "animate-[arShake_0.4s_ease-in-out]"; }
+                else if (ans.correct) { bgColor = "#2ECC71"; textColor = "#fff"; shadowColor = "#1a9a52"; }
+                else extraClass = "opacity-30";
               }
 
               return (
                 <button
                   key={i}
-                  className={`flex items-center justify-center font-black rounded-2xl cursor-pointer transition-all relative select-none ${extraClass}`}
-                  style={{
-                    width: 180,
-                    height: 180,
-                    fontSize: 60,
-                    backgroundColor: c.bg,
-                    color: c.text,
-                    boxShadow: `0 6px 0 ${c.shadow}`,
-                  }}
+                  className={`flex items-center justify-center font-black rounded-2xl cursor-pointer transition-all relative select-none px-2 ${extraClass}`}
+                  style={{ width: 180, height: 180, backgroundColor: bgColor, color: textColor, boxShadow: `0 6px 0 ${shadowColor}` }}
                   onClick={(e) => handleAnswer(ans.correct, i, e)}
                 >
-                  <span className="relative z-10">{ans.label}</span>
-                  {selectedAnswer === "correct" && ans.correct && (
-                    <span className="absolute top-2 right-3 text-2xl">✓</span>
+                  {selectedAnswer === "correct" && ans.correct ? (
+                    <span className="text-5xl animate-[popIn_0.3s_cubic-bezier(0.34,1.56,0.64,1)_forwards]">✅</span>
+                  ) : selectedAnswer === "incorrect" && i === clickedIdx ? (
+                    <span className="text-5xl">❌</span>
+                  ) : (
+                    <span className="text-center leading-tight break-words" style={{ fontSize: btnFontSize(ans.label) }}>{ans.label}</span>
                   )}
                 </button>
               );
