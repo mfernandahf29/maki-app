@@ -395,20 +395,20 @@ export default function GamePage() {
         <main className="flex-1 flex flex-col items-center justify-center px-4 py-4 gap-5 overflow-y-auto">
 
           {/* Pregunta */}
-          <h1 className="text-2xl md:text-3xl font-bold text-on-background text-center leading-snug max-w-2xl animate-[slideUp_0.4s_ease-out_forwards]">
+          <h1 className="text-2xl md:text-3xl font-bold text-on-background text-center leading-snug max-w-2xl animate-[slideUp_0.4s_ease-out_forwards] mb-10">
             {currentQuestion.question}
           </h1>
 
           {/* Visual: emojis (mate grado 1-2) */}
           {currentQuestion.visual.type === "emoji" && (
-            <div className={`flex flex-row flex-wrap justify-center items-center gap-4 bg-[#FFF8E7] border-4 border-[#FFD740] rounded-3xl px-6 py-6 shadow-lg w-full max-w-2xl ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
-              <div className="flex flex-row flex-wrap justify-center gap-2">
+            <div className={`flex flex-row flex-wrap justify-center items-center gap-4 bg-[#FFF8E7] border-4 border-[#FFD740] rounded-3xl px-6 py-6 shadow-lg w-full max-w-2xl mt-0 ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
+              <div className="flex flex-row flex-wrap justify-center gap-8">
                 {Array.from({ length: currentQuestion.visual.a }, (_, i) => (
                   <span key={i} className="select-none drop-shadow leading-none" style={{ fontSize: 100 }}>{currentQuestion.visual.emoji}</span>
                 ))}
               </div>
               <span className="font-black text-[#c49400] leading-none" style={{ fontSize: 64 }}>+</span>
-              <div className="flex flex-row flex-wrap justify-center gap-2">
+              <div className="flex flex-row flex-wrap justify-center gap-8">
                 {Array.from({ length: currentQuestion.visual.b }, (_, i) => (
                   <span key={i} className="select-none drop-shadow leading-none" style={{ fontSize: 100 }}>{currentQuestion.visual.emoji}</span>
                 ))}
@@ -439,8 +439,8 @@ export default function GamePage() {
             </div>
           )}
 
-          {/* Botones de respuesta — cuadrados 160×160 */}
-          <div className="grid grid-cols-2 gap-4">
+          {/* Botones de respuesta — cuadrados 180×180 */}
+          <div className="grid grid-cols-2 gap-4 mt-10">
             {currentQuestion.answers.map((ans, i) => {
               const c = BTN_COLORS[i % 4];
               let extraClass = "";
@@ -458,8 +458,8 @@ export default function GamePage() {
                   key={i}
                   className={`flex items-center justify-center font-black rounded-2xl cursor-pointer transition-all relative select-none ${extraClass}`}
                   style={{
-                    width: 160,
-                    height: 160,
+                    width: 180,
+                    height: 180,
                     fontSize: 60,
                     backgroundColor: c.bg,
                     color: c.text,
