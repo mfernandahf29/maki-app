@@ -7,13 +7,12 @@ const EMOJIS = ["🍎", "🍊", "⭐", "🌟", "🎈", "🦋", "🐥", "🍓"];
 const CONFETTI_COLORS = ["#29abd4", "#feb246", "#842bd2", "#2ECC71", "#E74C3C", "#F39C12", "#9B59B6", "#1ABC9C"];
 const TOTAL_QUESTIONS = 5;
 
-function generateQuestions(grado) {
+// ── Matemáticas ───────────────────────────────────────────────────────────────
+function generateMateQuestions(grado) {
   const grade = parseInt(grado) || 1;
-  const questions = [];
-
   const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-  const genWrongAnswers = (correct, min, max) => {
+  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+  const genWrong = (correct, min, max) => {
     const wrong = new Set();
     let attempts = 0;
     while (wrong.size < 3 && attempts < 200) {
@@ -23,77 +22,118 @@ function generateQuestions(grado) {
     }
     let offset = 1;
     while (wrong.size < 3) {
-      const up = correct + offset;
-      const down = correct - offset;
+      const up = correct + offset, down = correct - offset;
       if (up !== correct) wrong.add(up);
       if (wrong.size < 3 && down !== correct && down >= 0) wrong.add(down);
       offset++;
     }
     return Array.from(wrong).slice(0, 3);
   };
-
-  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
   const emoji = EMOJIS[rand(0, EMOJIS.length - 1)];
-
-  for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+  return Array.from({ length: TOTAL_QUESTIONS }, () => {
     let question, visual, correct, min, max;
-
     if (grade <= 2) {
-      const a = rand(1, 5);
-      const b = rand(1, 10 - a);
-      correct = a + b;
-      min = 1; max = 10;
+      const a = rand(1, 5), b = rand(1, 10 - a);
+      correct = a + b; min = 1; max = 10;
       question = `¿Cuánto es ${a} + ${b}?`;
       visual = { type: "emoji", a, b, emoji };
     } else if (grade <= 4) {
       if (Math.random() > 0.5) {
-        const a = rand(10, 50);
-        const b = rand(1, a - 1);
-        correct = a - b;
-        min = 1; max = 50;
+        const a = rand(10, 50), b = rand(1, a - 1);
+        correct = a - b; min = 1; max = 50;
         question = `¿Cuánto es ${a} − ${b}?`;
         visual = { type: "math", expr: `${a} − ${b}` };
       } else {
-        const a = rand(1, 25);
-        const b = rand(1, 50 - a);
-        correct = a + b;
-        min = 1; max = 50;
+        const a = rand(1, 25), b = rand(1, 50 - a);
+        correct = a + b; min = 1; max = 50;
         question = `¿Cuánto es ${a} + ${b}?`;
         visual = { type: "math", expr: `${a} + ${b}` };
       }
     } else {
-      const a = rand(2, 9);
-      const b = rand(2, 9);
-      correct = a * b;
-      min = 4; max = 81;
+      const a = rand(2, 9), b = rand(2, 9);
+      correct = a * b; min = 4; max = 81;
       question = `¿Cuánto es ${a} × ${b}?`;
       visual = { type: "math", expr: `${a} × ${b}` };
     }
-
-    const wrongAnswers = genWrongAnswers(correct, min, max);
-    const answers = shuffle([
-      { label: String(correct), correct: true },
-      ...wrongAnswers.map((n) => ({ label: String(n), correct: false })),
-    ]);
-
-    questions.push({ question, visual, answers });
-  }
-
-  return questions;
+    return {
+      question, visual,
+      answers: shuffle([
+        { label: String(correct), correct: true },
+        ...genWrong(correct, min, max).map((n) => ({ label: String(n), correct: false })),
+      ]),
+    };
+  });
 }
 
+// ── Lenguaje ──────────────────────────────────────────────────────────────────
+const LENGUAJE_BANK = [
+  { q: "¿Cuál es la primera letra de MANZANA?", w: "🍎 MANZANA", ok: "M", no: ["A", "N", "Z"] },
+  { q: "¿Qué letra falta en C_SA?",              w: "C _ S A",   ok: "A", no: ["O", "U", "I"] },
+  { q: "¿Cuántas letras tiene GATO?",            w: "🐱 GATO",   ok: "4", no: ["3", "5", "6"] },
+  { q: "¿Cuál es la última letra de PERRO?",     w: "🐶 PERRO",  ok: "O", no: ["R", "E", "P"] },
+  { q: "¿Qué letra falta en PE_RO?",             w: "P E _ R O", ok: "R", no: ["A", "S", "T"] },
+  { q: "¿Cuál es la primera letra de OSO?",      w: "🐻 OSO",    ok: "O", no: ["S", "A", "U"] },
+  { q: "¿Cuántas letras tiene LIBRO?",           w: "📚 LIBRO",  ok: "5", no: ["4", "6", "3"] },
+  { q: "¿Qué letra falta en S_L?",               w: "☀️ S _ L",  ok: "O", no: ["A", "I", "E"] },
+  { q: "¿Cuál es la primera letra de ELEFANTE?", w: "🐘 ELEFANTE", ok: "E", no: ["L", "F", "A"] },
+  { q: "¿Cuántas letras tiene LUNA?",            w: "🌙 LUNA",   ok: "4", no: ["3", "5", "2"] },
+  { q: "¿Qué letra falta en AG_A?",              w: "💧 AG _ A", ok: "U", no: ["O", "A", "I"] },
+  { q: "¿Cuál es la última letra de ÁRBOL?",     w: "🌳 ÁRBOL",  ok: "L", no: ["O", "B", "R"] },
+  { q: "¿Cuántas letras tiene PATO?",            w: "🦆 PATO",   ok: "4", no: ["3", "5", "6"] },
+  { q: "¿Qué letra falta en P_Z?",               w: "🐟 P _ Z",  ok: "E", no: ["A", "I", "O"] },
+  { q: "¿Cuál es la primera letra de FLOR?",     w: "🌸 FLOR",   ok: "F", no: ["L", "O", "R"] },
+];
+
+function generateLenguajeQuestions() {
+  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+  return shuffle(LENGUAJE_BANK).slice(0, TOTAL_QUESTIONS).map((item) => ({
+    question: item.q,
+    visual: { type: "word", word: item.w },
+    answers: shuffle([
+      { label: item.ok, correct: true },
+      ...item.no.map((a) => ({ label: a, correct: false })),
+    ]),
+  }));
+}
+
+// ── Ciencias ──────────────────────────────────────────────────────────────────
+const CIENCIAS_BANK = [
+  { q: "¿Qué animal vive en el agua?",                       w: "🌊 ¿En el agua?",    ok: "🐟 Pez",          no: ["🐕 Perro", "🐎 Caballo", "🐦 Pájaro"] },
+  { q: "¿Qué necesita una planta para crecer?",              w: "🌱 Planta",           ok: "☀️ Sol y agua",    no: ["❄️ Nieve", "🪨 Piedras", "🍬 Dulces"] },
+  { q: "¿Qué animal pone huevos?",                           w: "🥚 Huevos",           ok: "🐔 Gallina",       no: ["🐕 Perro", "🐱 Gato", "🐖 Cerdo"] },
+  { q: "¿Dónde vive un pez?",                                w: "🐟 Pez",              ok: "💧 Agua",          no: ["🏜️ Desierto", "🌳 Árbol", "🏔️ Montaña"] },
+  { q: "¿Qué parte de la planta está bajo la tierra?",       w: "🌿 Planta",           ok: "🌱 Raíz",          no: ["🍃 Hoja", "🌸 Flor", "🌲 Tronco"] },
+  { q: "¿Qué animal tiene 4 patas y ladra?",                 w: "🐾 ¿Quién soy?",     ok: "🐕 Perro",         no: ["🐟 Pez", "🐦 Pájaro", "🐛 Gusano"] },
+  { q: "¿Qué hace el Sol para las plantas?",                 w: "☀️ Sol",              ok: "🌱 Las hace crecer", no: ["❄️ Las congela", "💨 Las mueve", "🌧️ Las moja"] },
+  { q: "¿Qué animal puede volar?",                           w: "☁️ ¿Quién vuela?",   ok: "🦋 Mariposa",      no: ["🐢 Tortuga", "🐍 Serpiente", "🐸 Rana"] },
+  { q: "¿De dónde viene la leche?",                          w: "🥛 Leche",            ok: "🐄 Vaca",          no: ["🐟 Pez", "🐔 Gallina", "🐸 Rana"] },
+  { q: "¿Qué animal hace miel?",                             w: "🍯 Miel",             ok: "🐝 Abeja",         no: ["🦟 Mosquito", "🦋 Mariposa", "🕷️ Araña"] },
+  { q: "¿Qué tienen las plantas para captar la luz?",        w: "🌿 Planta",           ok: "🍃 Hojas",         no: ["🌸 Flores", "🌱 Raíces", "🌲 Tronco"] },
+  { q: "¿Qué animal tiene rayas negras y blancas?",          w: "🦓 ¿Quién soy?",     ok: "🦓 Cebra",         no: ["🐅 Tigre", "🐘 Elefante", "🦁 León"] },
+  { q: "¿Qué necesitamos beber todos los días?",             w: "💧 ¿Qué es?",        ok: "💧 Agua",          no: ["🧃 Jugo", "☕ Café", "🥤 Refresco"] },
+  { q: "¿Qué animal es el más grande del mar?",              w: "🌊 Mar",              ok: "🐋 Ballena",       no: ["🐟 Pez", "🦀 Cangrejo", "🐙 Pulpo"] },
+  { q: "¿De qué color son las hojas de los árboles?",        w: "🌳 Árbol",            ok: "💚 Verde",         no: ["❤️ Rojo", "💜 Morado", "🧡 Naranja"] },
+];
+
+function generateCienciasQuestions() {
+  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+  return shuffle(CIENCIAS_BANK).slice(0, TOTAL_QUESTIONS).map((item) => ({
+    question: item.q,
+    visual: { type: "word", word: item.w },
+    answers: shuffle([
+      { label: item.ok, correct: true },
+      ...item.no.map((a) => ({ label: a, correct: false })),
+    ]),
+  }));
+}
+
+// ── Particles / Confetti ──────────────────────────────────────────────────────
 const buildParticles = (x, y) => {
   const emojis = ["⭐", "✨", "🎉", "🌟"];
   return Array.from({ length: 12 }, (_, i) => {
     const angle = (i / 12) * Math.PI * 2;
     const dist = 80 + (i % 3) * 40;
-    return {
-      id: Date.now() + i,
-      emoji: emojis[i % emojis.length],
-      x, y,
-      tx: Math.cos(angle) * dist,
-      ty: Math.sin(angle) * dist,
-    };
+    return { id: Date.now() + i, emoji: emojis[i % emojis.length], x, y, tx: Math.cos(angle) * dist, ty: Math.sin(angle) * dist };
   });
 };
 
@@ -108,34 +148,57 @@ const buildConfetti = () =>
     size: 8 + (i % 4) * 3,
   }));
 
+const CURSO_META = {
+  mate:     { titulo: "Matemáticas Básicas", color: "#feb246" },
+  lenguaje: { titulo: "Palabras Amigas",     color: "#29abd4" },
+  ciencias: { titulo: "Ciencias Naturales",  color: "#2ECC71" },
+};
+
+// ── Componente principal ──────────────────────────────────────────────────────
 export default function GamePage() {
-  const [questions, setQuestions] = useState([]);
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [stars, setStars] = useState(0);
-  const [particles, setParticles] = useState([]);
+  const [questions, setQuestions]       = useState([]);
+  const [currentIdx, setCurrentIdx]     = useState(0);
+  const [stars, setStars]               = useState(0);
+  const [particles, setParticles]       = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [isExploding, setIsExploding] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [confetti, setConfetti] = useState([]);
-  const [usuario, setUsuario] = useState(null);
-  const [gradoLabel, setGradoLabel] = useState("Matemáticas");
+  const [isExploding, setIsExploding]   = useState(false);
+  const [showModal, setShowModal]       = useState(false);
+  const [confetti, setConfetti]         = useState([]);
+  const [usuario, setUsuario]           = useState(null);
+  const [cursoLabel, setCursoLabel]     = useState("Matemáticas Básicas");
+  const [modeLabel, setModeLabel]       = useState("Adivina");
+  const [cursoKey, setCursoKey]         = useState("mate");
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const curso = params.get("curso") || "mate";
+    setCursoKey(curso);
+    setCursoLabel(CURSO_META[curso]?.titulo || "Matemáticas Básicas");
+
     const datos = localStorage.getItem("maki_user");
     const user = datos ? JSON.parse(datos) : null;
     setUsuario(user);
+    const grade = parseInt(user?.grado || 1);
 
-    const grado = user?.grado || 1;
-    const grade = parseInt(grado);
-    if (grade <= 2) setGradoLabel("Sumas Divertidas");
-    else if (grade <= 4) setGradoLabel("Sumas y Restas");
-    else setGradoLabel("Multiplicaciones");
-
-    setQuestions(generateQuestions(grado));
+    if (curso === "mate") {
+      if (grade <= 2) setModeLabel("Sumas Divertidas");
+      else if (grade <= 4) setModeLabel("Sumas y Restas");
+      else setModeLabel("Multiplicaciones");
+      setQuestions(generateMateQuestions(grade));
+    } else if (curso === "lenguaje") {
+      setModeLabel("Letras y Palabras");
+      setQuestions(generateLenguajeQuestions());
+    } else if (curso === "ciencias") {
+      setModeLabel("Animales y Plantas");
+      setQuestions(generateCienciasQuestions());
+    } else {
+      setModeLabel("Preguntas");
+      setQuestions(generateMateQuestions(grade));
+    }
   }, []);
 
   const currentQuestion = questions[currentIdx] || null;
-  const progress = TOTAL_QUESTIONS > 0 ? ((currentIdx + 1) / TOTAL_QUESTIONS) * 100 : 0;
+  const progress = ((currentIdx + 1) / TOTAL_QUESTIONS) * 100;
 
   const launchParticles = (x, y) => {
     const ps = buildParticles(x, y);
@@ -143,12 +206,12 @@ export default function GamePage() {
     setTimeout(() => setParticles((prev) => prev.slice(ps.length)), 1100);
   };
 
-  const saveProgress = async (userId, correctCount) => {
+  const saveProgress = async (userId, correctCount, curso) => {
     if (!userId) return;
     const progresoVal = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
     try {
       await supabase.from("progreso").upsert(
-        { user_id: userId, curso: "mate", progreso: progresoVal },
+        { user_id: userId, curso, progreso: progresoVal },
         { onConflict: "user_id,curso" }
       );
     } catch (_) {}
@@ -164,7 +227,6 @@ export default function GamePage() {
       setIsExploding(true);
       const newStars = stars + 1;
       setStars(newStars);
-
       setTimeout(() => {
         setIsExploding(false);
         if (currentIdx + 1 >= TOTAL_QUESTIONS) {
@@ -172,7 +234,7 @@ export default function GamePage() {
           setConfetti(pieces);
           setTimeout(() => setConfetti([]), 3500);
           setShowModal(true);
-          saveProgress(usuario?.id, newStars);
+          saveProgress(usuario?.id, newStars, cursoKey);
         } else {
           setCurrentIdx((i) => i + 1);
           setSelectedAnswer(null);
@@ -185,9 +247,16 @@ export default function GamePage() {
   };
 
   const handleRestart = () => {
+    const params = new URLSearchParams(window.location.search);
+    const curso = params.get("curso") || "mate";
     const datos = localStorage.getItem("maki_user");
     const user = datos ? JSON.parse(datos) : null;
-    setQuestions(generateQuestions(user?.grado || 1));
+    const grade = parseInt(user?.grado || 1);
+
+    if (curso === "lenguaje") setQuestions(generateLenguajeQuestions());
+    else if (curso === "ciencias") setQuestions(generateCienciasQuestions());
+    else setQuestions(generateMateQuestions(grade));
+
     setCurrentIdx(0);
     setStars(0);
     setShowModal(false);
@@ -209,11 +278,8 @@ export default function GamePage() {
       {/* Particles */}
       <div className="fixed inset-0 pointer-events-none z-[9999]">
         {particles.map((p) => (
-          <div
-            key={p.id}
-            className="absolute text-[22px] animate-[volarParticula_1s_ease-out_forwards]"
-            style={{ left: p.x, top: p.y, "--tx": `${p.tx}px`, "--ty": `${p.ty}px` }}
-          >
+          <div key={p.id} className="absolute text-[22px] animate-[volarParticula_1s_ease-out_forwards]"
+            style={{ left: p.x, top: p.y, "--tx": `${p.tx}px`, "--ty": `${p.ty}px` }}>
             {p.emoji}
           </div>
         ))}
@@ -222,31 +288,18 @@ export default function GamePage() {
       {/* Header */}
       <header className="flex items-center justify-between p-4 md:p-6 bg-surface border-b-2 border-surface-variant z-10 relative">
         <Link href="/estudiante/menu">
-          <button
-            aria-label="Volver"
-            className="flex items-center justify-center w-12 h-12 rounded-full bg-surface-container-high hover:bg-surface-variant transition-colors group"
-          >
-            <span
-              className="material-symbols-outlined text-primary group-hover:-translate-x-1 transition-transform"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              arrow_back
-            </span>
+          <button aria-label="Volver"
+            className="flex items-center justify-center w-12 h-12 rounded-full bg-surface-container-high hover:bg-surface-variant transition-colors group">
+            <span className="material-symbols-outlined text-primary group-hover:-translate-x-1 transition-transform"
+              style={{ fontVariationSettings: "'FILL' 1" }}>arrow_back</span>
           </button>
         </Link>
-        <div className="flex flex-col items-center">
-          <span className="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">
-            Matemáticas Básicas
-          </span>
-          <span className="font-headline-md text-headline-md text-primary">{gradoLabel}</span>
+        <div className="flex flex-col items-center text-center">
+          <span className="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider">{cursoLabel}</span>
+          <span className="font-headline-md text-headline-md text-primary">{modeLabel}</span>
         </div>
         <div className="flex items-center gap-2 bg-secondary-container rounded-full px-4 py-2 shadow-sm">
-          <span
-            className="material-symbols-outlined text-secondary"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            star
-          </span>
+          <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
           <span className="font-body-xl text-body-xl text-on-secondary-container">{stars}</span>
         </div>
       </header>
@@ -257,10 +310,7 @@ export default function GamePage() {
           Pregunta {Math.min(currentIdx + 1, TOTAL_QUESTIONS)} de {TOTAL_QUESTIONS}
         </span>
         <div className="w-full max-w-2xl h-4 bg-outline-variant rounded-full overflow-hidden">
-          <div
-            className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="h-full bg-primary rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
         </div>
       </div>
 
@@ -268,58 +318,52 @@ export default function GamePage() {
       {currentQuestion && (
         <main className="flex-1 flex flex-col items-center justify-center p-6 md:p-10 relative z-0">
           <div className="flex flex-col items-center text-center max-w-3xl w-full mb-10">
-            <h1 className="font-headline-lg text-[28px] md:text-[36px] text-on-background mb-8 animate-[slideUp_0.4s_ease-out_forwards]">
+            <h1 className="font-headline-lg text-[24px] md:text-[32px] text-on-background mb-8 animate-[slideUp_0.4s_ease-out_forwards]">
               {currentQuestion.question}
             </h1>
 
-            {/* Visual */}
-            {currentQuestion.visual.type === "emoji" ? (
-              <div
-                className={`flex flex-wrap justify-center items-center gap-2 mb-10 p-4 ${
-                  isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"
-                }`}
-              >
+            {/* Visual: emoji (math grade 1-2) */}
+            {currentQuestion.visual.type === "emoji" && (
+              <div className={`flex flex-wrap justify-center items-center gap-2 mb-10 p-4 ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
                 <div className="flex flex-wrap justify-center gap-1">
                   {Array.from({ length: currentQuestion.visual.a }, (_, i) => (
-                    <span key={i} className="text-[2.5rem] md:text-[3rem] drop-shadow select-none">
-                      {currentQuestion.visual.emoji}
-                    </span>
+                    <span key={i} className="text-[2.5rem] md:text-[3rem] drop-shadow select-none">{currentQuestion.visual.emoji}</span>
                   ))}
                 </div>
                 <span className="text-[2rem] text-on-surface-variant mx-2">+</span>
                 <div className="flex flex-wrap justify-center gap-1">
                   {Array.from({ length: currentQuestion.visual.b }, (_, i) => (
-                    <span key={i} className="text-[2.5rem] md:text-[3rem] drop-shadow select-none">
-                      {currentQuestion.visual.emoji}
-                    </span>
+                    <span key={i} className="text-[2.5rem] md:text-[3rem] drop-shadow select-none">{currentQuestion.visual.emoji}</span>
                   ))}
                 </div>
               </div>
-            ) : (
-              <div
-                className={`text-[4rem] md:text-[6rem] font-bold text-primary leading-none mb-10 select-none bg-primary-container/20 px-8 py-6 rounded-3xl ${
-                  isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"
-                }`}
-              >
+            )}
+
+            {/* Visual: math expression */}
+            {currentQuestion.visual.type === "math" && (
+              <div className={`text-[4rem] md:text-[6rem] font-bold text-primary leading-none mb-10 select-none bg-primary-container/20 px-8 py-6 rounded-3xl ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
                 {currentQuestion.visual.expr}
+              </div>
+            )}
+
+            {/* Visual: word / science (lenguaje + ciencias) */}
+            {currentQuestion.visual.type === "word" && (
+              <div className={`text-[1.8rem] md:text-[2.5rem] font-bold text-primary bg-primary-container/20 px-8 py-6 rounded-3xl select-none text-center mb-10 leading-snug ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
+                {currentQuestion.visual.word}
               </div>
             )}
           </div>
 
-          {/* Answers */}
+          {/* Answers grid */}
           <div className="grid grid-cols-2 gap-4 md:gap-6 w-full max-w-2xl">
             {currentQuestion.answers.map((ans, i) => {
-              let btnClass =
-                "bg-white border-2 border-surface-variant rounded-[1.5rem] shadow-[0_8px_16px_rgba(0,103,130,0.05)] h-28 md:h-32 flex items-center justify-center font-headline-md text-[26px] md:text-[30px] text-primary hover:bg-surface-container-low transition-colors relative overflow-hidden";
-              if (selectedAnswer === "incorrect" && !ans.correct) {
-                btnClass =
-                  "bg-[#fdeded] border-2 border-error rounded-[1.5rem] h-28 md:h-32 flex items-center justify-center font-headline-md text-[26px] md:text-[30px] text-error animate-[arShake_0.4s_ease-in-out] relative overflow-hidden";
-              } else if (selectedAnswer === "correct" && ans.correct) {
-                btnClass =
-                  "bg-[#eafaf1] border-2 border-[#2ECC71] rounded-[1.5rem] h-28 md:h-32 flex items-center justify-center font-headline-md text-[26px] md:text-[30px] text-[#2ECC71] relative overflow-hidden";
-              }
+              let base = "bg-white border-2 border-surface-variant rounded-[1.5rem] shadow-[0_8px_16px_rgba(0,103,130,0.05)] min-h-[7rem] flex items-center justify-center font-headline-md text-[18px] md:text-[22px] text-primary hover:bg-surface-container-low transition-colors relative overflow-hidden px-3 py-4 text-center leading-snug";
+              if (selectedAnswer === "incorrect" && !ans.correct)
+                base = "bg-[#fdeded] border-2 border-error rounded-[1.5rem] min-h-[7rem] flex items-center justify-center font-headline-md text-[18px] md:text-[22px] text-error animate-[arShake_0.4s_ease-in-out] relative overflow-hidden px-3 py-4 text-center leading-snug";
+              else if (selectedAnswer === "correct" && ans.correct)
+                base = "bg-[#eafaf1] border-2 border-[#2ECC71] rounded-[1.5rem] min-h-[7rem] flex items-center justify-center font-headline-md text-[18px] md:text-[22px] text-[#2ECC71] relative overflow-hidden px-3 py-4 text-center leading-snug";
               return (
-                <button key={i} className={btnClass} onClick={(e) => handleAnswer(ans.correct, e)}>
+                <button key={i} className={base} onClick={(e) => handleAnswer(ans.correct, e)}>
                   <span className="relative z-10">{ans.label}</span>
                 </button>
               );
@@ -330,142 +374,33 @@ export default function GamePage() {
 
       {/* Celebration Modal */}
       {showModal && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.78)',
-            zIndex: 50,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backdropFilter: 'blur(4px)',
-          }}
-        >
-          {/* Confetti */}
+        <div style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.78)", zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(4px)" }}>
           {confetti.map((p) => (
-            <div
-              key={p.id}
-              style={{
-                position: 'absolute',
-                top: '-30px',
-                left: p.left,
-                pointerEvents: 'none',
-                animation: `confettiFall ${p.duration} ${p.delay} ease-in forwards`,
-              }}
-            >
-              <div
-                style={{
-                  width: p.size,
-                  height: p.size + 6,
-                  backgroundColor: p.color,
-                  borderRadius: 3,
-                  transform: `rotate(${p.rotate}deg)`,
-                }}
-              />
+            <div key={p.id} style={{ position: "absolute", top: "-30px", left: p.left, pointerEvents: "none", animation: `confettiFall ${p.duration} ${p.delay} ease-in forwards` }}>
+              <div style={{ width: p.size, height: p.size + 6, backgroundColor: p.color, borderRadius: 3, transform: `rotate(${p.rotate}deg)` }} />
             </div>
           ))}
-
-          {/* Modal Card — all sizing via inline styles, no Tailwind width classes */}
-          <div
-            className="bg-white"
-            style={{
-              position: 'relative',
-              zIndex: 10,
-              borderRadius: '1.75rem',
-              padding: '36px 32px',
-              width: 'min(400px, calc(100vw - 16px))',
-              minWidth: '300px',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              boxShadow: '0 24px 48px rgba(0,0,0,0.35)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              animation: 'popInBig 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards',
-            }}
-          >
-            <div style={{ fontSize: '4rem', marginBottom: '4px', userSelect: 'none' }}>🦊</div>
-            <div style={{ fontSize: '2rem', marginBottom: '12px', userSelect: 'none' }}>🎉🎊🎉</div>
-
-            <h2
-              className="text-primary"
-              style={{ fontSize: '1.9rem', fontWeight: 800, lineHeight: 1.15, marginBottom: '10px' }}
-            >
-              ¡Lo lograste!
-            </h2>
-
-            <p
-              className="text-on-surface-variant"
-              style={{ fontSize: '1rem', lineHeight: 1.55, marginBottom: '20px' }}
-            >
-              Completaste el juego con{' '}
-              <strong className="text-secondary" style={{ fontSize: '1.15rem' }}>{stars}</strong>{' '}
-              {stars === 1 ? 'respuesta correcta' : 'respuestas correctas'}.
+          <div className="bg-white" style={{ position: "relative", zIndex: 10, borderRadius: "1.75rem", padding: "36px 32px", width: "min(400px, calc(100vw - 16px))", minWidth: "300px", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 24px 48px rgba(0,0,0,0.35)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", animation: "popInBig 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards" }}>
+            <div style={{ fontSize: "4rem", marginBottom: "4px", userSelect: "none" }}>🦊</div>
+            <div style={{ fontSize: "2rem", marginBottom: "12px", userSelect: "none" }}>🎉🎊🎉</div>
+            <h2 className="text-primary" style={{ fontSize: "1.9rem", fontWeight: 800, lineHeight: 1.15, marginBottom: "10px" }}>¡Lo lograste!</h2>
+            <p className="text-on-surface-variant" style={{ fontSize: "1rem", lineHeight: 1.55, marginBottom: "20px" }}>
+              Completaste el juego con{" "}
+              <strong className="text-secondary" style={{ fontSize: "1.15rem" }}>{stars}</strong>{" "}
+              {stars === 1 ? "respuesta correcta" : "respuestas correctas"}.
             </p>
-
-            {/* Stars */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+            <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
               {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="material-symbols-outlined text-secondary-container"
-                  style={{
-                    fontSize: '3rem',
-                    fontVariationSettings: "'FILL' 1",
-                    animation: `popIn 0.4s ${i * 0.15}s cubic-bezier(0.34,1.56,0.64,1) both`,
-                  }}
-                >
-                  star
-                </span>
+                <span key={i} className="material-symbols-outlined text-secondary-container" style={{ fontSize: "3rem", fontVariationSettings: "'FILL' 1", animation: `popIn 0.4s ${i * 0.15}s cubic-bezier(0.34,1.56,0.64,1) both` }}>star</span>
               ))}
             </div>
-
-            {/* Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-              <Link href="/estudiante/menu" style={{ display: 'block', width: '100%' }}>
-                <button
-                  className="bg-primary text-on-primary"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    width: '100%',
-                    padding: '18px 20px',
-                    borderRadius: '14px',
-                    border: 'none',
-                    fontSize: '1.1rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    boxShadow: '0 6px 0 rgba(0,60,90,0.35)',
-                    transition: 'transform 0.15s',
-                  }}
-                >
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
+              <Link href="/estudiante/menu" style={{ display: "block", width: "100%" }}>
+                <button className="bg-primary text-on-primary" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "100%", padding: "18px 20px", borderRadius: "14px", border: "none", fontSize: "1.1rem", fontWeight: 700, cursor: "pointer", boxShadow: "0 6px 0 rgba(0,60,90,0.35)", transition: "transform 0.15s" }}>
                   🏠 Volver al Menú
                 </button>
               </Link>
-
-              <button
-                onClick={handleRestart}
-                className="text-primary"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  width: '100%',
-                  padding: '14px 20px',
-                  borderRadius: '14px',
-                  border: '2px solid rgba(0,103,130,0.25)',
-                  backgroundColor: '#f2f7fb',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'background-color 0.15s',
-                }}
-              >
+              <button onClick={handleRestart} className="text-primary" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "100%", padding: "14px 20px", borderRadius: "14px", border: "2px solid rgba(0,103,130,0.25)", backgroundColor: "#f2f7fb", fontSize: "1rem", fontWeight: 600, cursor: "pointer", transition: "background-color 0.15s" }}>
                 🔄 Jugar de nuevo
               </button>
             </div>
@@ -474,39 +409,13 @@ export default function GamePage() {
       )}
 
       <style jsx global>{`
-        @keyframes volarParticula {
-          0% { transform: translate(0, 0) scale(1); opacity: 1; }
-          100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-        @keyframes slideUp {
-          0% { transform: translateY(20px); opacity: 0; }
-          100% { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes arExplode {
-          0% { transform: scale(1); }
-          40% { transform: scale(1.35); }
-          70% { transform: scale(0.92); }
-          100% { transform: scale(1); }
-        }
-        @keyframes arShake {
-          0%, 100% { transform: translateX(0); }
-          20% { transform: translateX(-8px); }
-          40% { transform: translateX(8px); }
-          60% { transform: translateX(-5px); }
-          80% { transform: translateX(5px); }
-        }
-        @keyframes confettiFall {
-          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-          100% { transform: translateY(100vh) rotate(720deg); opacity: 0.2; }
-        }
-        @keyframes popInBig {
-          0% { transform: scale(0.5); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes popIn {
-          0% { transform: scale(0); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
-        }
+        @keyframes volarParticula { 0%{transform:translate(0,0) scale(1);opacity:1} 100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0} }
+        @keyframes slideUp { 0%{transform:translateY(20px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+        @keyframes arExplode { 0%{transform:scale(1)} 40%{transform:scale(1.35)} 70%{transform:scale(0.92)} 100%{transform:scale(1)} }
+        @keyframes arShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+        @keyframes confettiFall { 0%{transform:translateY(0) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0.2} }
+        @keyframes popInBig { 0%{transform:scale(0.5);opacity:0} 100%{transform:scale(1);opacity:1} }
+        @keyframes popIn { 0%{transform:scale(0);opacity:0} 100%{transform:scale(1);opacity:1} }
       `}</style>
     </div>
   );
