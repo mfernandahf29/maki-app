@@ -1,8 +1,20 @@
 "use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 
 export default function StudentMenu() {
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const datos = localStorage.getItem("maki_user");
+    if (datos) {
+      setUsuario(JSON.parse(datos));
+    }
+  }, []);
+
+  const nombre = usuario?.nombre || usuario?.email?.split("@")[0] || "Estudiante";
+
   return (
     <div className="bg-surface text-on-surface min-h-screen pt-20 pb-24 md:pb-0 font-body-md">
       {/* TopAppBar */}
@@ -35,7 +47,7 @@ export default function StudentMenu() {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAopSzYtmrAo77UDWel3wyKpPzbaGMbVGSY7-XOeQzEVIca3Z7NYu-w8jVAfI6fm1L-jD8bDkwZPOUevOqb_s5q2dCGjkdHdNnwB-h2ONmyJQZ9KMf_pdvf5FhuuvmQCx3IYKEMcXK-9PJ_mzgedAA9-AEnNyLJU4lCHpbex-0fwJHZC83YQfs5f9nds1zgh_Xb9FisKr_fFeGv7q98bYlAQxHM7-3GRqI98NCKiQYhXhAzO32Bw1EvXo2qfyzRPcU-NrdeO7ZbMNg"
             />
             <span className="font-headline-md text-headline-md font-bold text-primary hidden md:block">
-              Hola, Leo!
+              Hola, {nombre}!
             </span>
           </div>
           <Link href="/">
@@ -115,7 +127,6 @@ export default function StudentMenu() {
                 <h3 className="font-headline-md text-[24px] font-bold text-on-background">Matemáticas Mágicas</h3>
                 <p className="font-body-md text-on-surface-variant">Aprende a sumar con MAKI.</p>
               </div>
-              
               <div className="w-full space-y-2">
                 <div className="flex justify-between font-label-lg">
                   <span className="text-primary font-bold">Progreso</span>
@@ -125,7 +136,6 @@ export default function StudentMenu() {
                   <div className="h-full bg-secondary-container rounded-full" style={{ width: "60%" }}></div>
                 </div>
               </div>
-
               <div className="flex flex-col gap-4 mt-auto pt-4">
                 <Link href="/estudiante/juego?curso=mate&tipo=adivina" className="w-full">
                   <button className="w-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] active:translate-y-1 active:shadow-none bg-secondary-container text-on-secondary-container font-body-lg px-4 py-3 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-1 transition-transform">
@@ -159,7 +169,6 @@ export default function StudentMenu() {
                 <h3 className="font-headline-md text-[24px] font-bold text-on-background">Palabras Amigas</h3>
                 <p className="font-body-md text-on-surface-variant">Descubre nuevas letras y sonidos.</p>
               </div>
-              
               <div className="w-full space-y-2">
                 <div className="flex justify-between font-label-lg">
                   <span className="text-primary font-bold">Progreso</span>
@@ -169,7 +178,6 @@ export default function StudentMenu() {
                   <div className="h-full bg-primary-container rounded-full" style={{ width: "25%" }}></div>
                 </div>
               </div>
-
               <div className="flex flex-col gap-4 mt-auto pt-4">
                 <Link href="/estudiante/juego?curso=lenguaje&tipo=adivina" className="w-full">
                   <button className="w-full shadow-[0_4px_0_0_rgba(0,0,0,0.2)] active:translate-y-1 active:shadow-none bg-primary-container text-on-primary-container font-body-lg px-4 py-3 rounded-xl flex items-center justify-center gap-2 hover:-translate-y-1 transition-transform">
@@ -195,9 +203,7 @@ export default function StudentMenu() {
             <article className="bg-white/85 backdrop-blur-md border-2 border-surface-variant rounded-[2rem] p-8 flex flex-col gap-6 relative overflow-hidden group opacity-80 grayscale-[30%] animate-pop-in shadow-lg" style={{ animationDelay: "0.4s" }}>
               <div className="absolute inset-0 bg-surface/40 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center gap-4">
                 <span className="material-symbols-outlined text-5xl text-outline">lock</span>
-                <span className="font-body-lg text-outline bg-white px-4 py-2 rounded-full shadow-sm">
-                  Alcanza Nivel 6
-                </span>
+                <span className="font-body-lg text-outline bg-white px-4 py-2 rounded-full shadow-sm">Alcanza Nivel 6</span>
               </div>
               <div className="flex justify-center py-4">
                 <span className="text-[4rem] drop-shadow-md select-none">🌳</span>
@@ -206,7 +212,6 @@ export default function StudentMenu() {
                 <h3 className="font-headline-md text-[24px] font-bold text-on-background">Cuidemos la Tierra</h3>
                 <p className="font-body-md text-on-surface-variant">Conoce a los animales y plantas.</p>
               </div>
-              
               <div className="w-full space-y-2">
                 <div className="flex justify-between font-label-lg">
                   <span className="text-outline font-bold">Progreso</span>
@@ -217,7 +222,6 @@ export default function StudentMenu() {
                 </div>
               </div>
             </article>
-
           </div>
         </section>
       </main>
