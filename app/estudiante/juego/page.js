@@ -401,17 +401,24 @@ export default function GamePage() {
 
           {/* Visual: emojis (mate grado 1-2) */}
           {currentQuestion.visual.type === "emoji" && (
-            <div className={`flex flex-row flex-wrap justify-center items-center gap-4 bg-[#FFF8E7] border-4 border-[#FFD740] rounded-3xl px-6 py-6 shadow-lg w-full max-w-2xl mt-0 ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
-              <div className="flex flex-row flex-wrap justify-center gap-8">
-                {Array.from({ length: currentQuestion.visual.a }, (_, i) => (
-                  <span key={i} className="select-none drop-shadow leading-none" style={{ fontSize: 100 }}>{currentQuestion.visual.emoji}</span>
-                ))}
+            <div className={`flex flex-row items-center justify-center gap-8 bg-[#FFF8E7] border-4 border-[#FFD740] rounded-3xl px-8 py-8 shadow-lg w-full max-w-2xl ${isExploding ? "animate-[arExplode_0.7s_ease-out_forwards]" : "animate-floating"}`}>
+              {/* Grupo 1 */}
+              <div className="flex-1 bg-white rounded-2xl p-4 shadow-inner">
+                <div className="grid grid-cols-3 justify-items-center gap-3">
+                  {Array.from({ length: currentQuestion.visual.a }, (_, i) => (
+                    <span key={i} className="text-[5rem] select-none drop-shadow leading-none">{currentQuestion.visual.emoji}</span>
+                  ))}
+                </div>
               </div>
-              <span className="font-black text-[#c49400] leading-none" style={{ fontSize: 64 }}>+</span>
-              <div className="flex flex-row flex-wrap justify-center gap-8">
-                {Array.from({ length: currentQuestion.visual.b }, (_, i) => (
-                  <span key={i} className="select-none drop-shadow leading-none" style={{ fontSize: 100 }}>{currentQuestion.visual.emoji}</span>
-                ))}
+              {/* Signo + */}
+              <span className="font-black text-[#c49400] leading-none shrink-0" style={{ fontSize: 72 }}>+</span>
+              {/* Grupo 2 */}
+              <div className="flex-1 bg-white rounded-2xl p-4 shadow-inner">
+                <div className="grid grid-cols-3 justify-items-center gap-3">
+                  {Array.from({ length: currentQuestion.visual.b }, (_, i) => (
+                    <span key={i} className="text-[5rem] select-none drop-shadow leading-none">{currentQuestion.visual.emoji}</span>
+                  ))}
+                </div>
               </div>
             </div>
           )}
