@@ -100,7 +100,7 @@ export default function RegisterPage() {
         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-primary-container rounded-full opacity-20 blur-2xl"></div>
 
         <div className="text-center mb-9 relative z-10">
-          <img src="/logo-maki.png" className="w-24 h-24 object-contain mx-auto mb-2" alt="MAKI Logo" />
+          <img src="/logo-maki.png" className="w-24 h-24 object-cover rounded-full mx-auto mb-2 border-4 border-white shadow-lg" alt="MAKI Logo" />
           <h1 className="font-display-logo text-[32px] md:text-[38px] text-primary tracking-widest mb-0 uppercase leading-none">MAKI</h1>
           <p className="font-body-md text-[14px] md:text-[16px] text-on-surface-variant mt-1 leading-normal">Crea tu cuenta para comenzar a jugar</p>
         </div>
