@@ -330,15 +330,27 @@ export default function GamePage() {
 
       {/* Celebration Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center backdrop-blur-sm" style={{ padding: '12px' }}>
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.78)',
+            zIndex: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(4px)',
+          }}
+        >
           {/* Confetti */}
           {confetti.map((p) => (
             <div
               key={p.id}
-              className="absolute pointer-events-none"
               style={{
-                top: "-30px",
+                position: 'absolute',
+                top: '-30px',
                 left: p.left,
+                pointerEvents: 'none',
                 animation: `confettiFall ${p.duration} ${p.delay} ease-in forwards`,
               }}
             >
@@ -354,30 +366,47 @@ export default function GamePage() {
             </div>
           ))}
 
-          {/* Modal Card */}
+          {/* Modal Card — all sizing via inline styles, no Tailwind width classes */}
           <div
-            className="bg-white rounded-[2rem] w-full flex flex-col items-center text-center shadow-2xl relative z-10 overflow-y-auto"
+            className="bg-white"
             style={{
-              minWidth: '320px',
-              maxWidth: '520px',
-              maxHeight: '92vh',
-              padding: '32px 28px',
+              position: 'relative',
+              zIndex: 10,
+              borderRadius: '1.75rem',
+              padding: '36px 32px',
+              width: 'min(400px, calc(100vw - 16px))',
+              minWidth: '300px',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 24px 48px rgba(0,0,0,0.35)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
               animation: 'popInBig 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards',
             }}
           >
-            <div className="text-[4rem] mb-1 animate-floating select-none">🦊</div>
-            <div className="text-[2.2rem] mb-3 select-none">🎉🎊🎉</div>
-            <h2 className="font-headline-lg text-primary mb-2" style={{ fontSize: '2rem', lineHeight: '1.2' }}>
+            <div style={{ fontSize: '4rem', marginBottom: '4px', userSelect: 'none' }}>🦊</div>
+            <div style={{ fontSize: '2rem', marginBottom: '12px', userSelect: 'none' }}>🎉🎊🎉</div>
+
+            <h2
+              className="text-primary"
+              style={{ fontSize: '1.9rem', fontWeight: 800, lineHeight: 1.15, marginBottom: '10px' }}
+            >
               ¡Lo lograste!
             </h2>
-            <p className="text-on-surface-variant mb-5" style={{ fontSize: '1rem', lineHeight: '1.5' }}>
-              Completaste el juego con{" "}
-              <strong className="text-secondary" style={{ fontSize: '1.2rem' }}>{stars}</strong>{" "}
-              {stars === 1 ? "respuesta correcta" : "respuestas correctas"}.
+
+            <p
+              className="text-on-surface-variant"
+              style={{ fontSize: '1rem', lineHeight: 1.55, marginBottom: '20px' }}
+            >
+              Completaste el juego con{' '}
+              <strong className="text-secondary" style={{ fontSize: '1.15rem' }}>{stars}</strong>{' '}
+              {stars === 1 ? 'respuesta correcta' : 'respuestas correctas'}.
             </p>
 
             {/* Stars */}
-            <div className="flex gap-3 mb-6">
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
@@ -394,24 +423,48 @@ export default function GamePage() {
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-col gap-3 w-full">
-              <Link href="/estudiante/menu" className="w-full block">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+              <Link href="/estudiante/menu" style={{ display: 'block', width: '100%' }}>
                 <button
-                  className="w-full bg-primary text-on-primary rounded-2xl flex items-center justify-center gap-2 transition-all hover:-translate-y-1 active:translate-y-1"
+                  className="bg-primary text-on-primary"
                   style={{
-                    fontSize: '1.15rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    width: '100%',
+                    padding: '18px 20px',
+                    borderRadius: '14px',
+                    border: 'none',
+                    fontSize: '1.1rem',
                     fontWeight: 700,
-                    padding: '18px 16px',
-                    boxShadow: '0 6px 0 rgba(0,83,110,0.4)',
+                    cursor: 'pointer',
+                    boxShadow: '0 6px 0 rgba(0,60,90,0.35)',
+                    transition: 'transform 0.15s',
                   }}
                 >
                   🏠 Volver al Menú
                 </button>
               </Link>
+
               <button
                 onClick={handleRestart}
-                className="w-full bg-surface-container-high text-primary rounded-2xl border-2 border-primary/20 hover:bg-primary-container/20 transition-colors flex items-center justify-center gap-2"
-                style={{ fontSize: '1rem', padding: '14px 16px' }}
+                className="text-primary"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  width: '100%',
+                  padding: '14px 20px',
+                  borderRadius: '14px',
+                  border: '2px solid rgba(0,103,130,0.25)',
+                  backgroundColor: '#f2f7fb',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'background-color 0.15s',
+                }}
               >
                 🔄 Jugar de nuevo
               </button>
