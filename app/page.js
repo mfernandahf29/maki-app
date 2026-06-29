@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import MakiFox from "@/components/MakiFox";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -39,7 +38,7 @@ export default function LoginPage() {
   return (
     <main className="w-full max-w-[450px] relative z-10 animate-pop-in mx-auto mt-12 md:mt-24 p-4">
       <div className="text-center mb-8 flex flex-col items-center">
-        <MakiFox className="mb-4" />
+        <img src="/logo-maki.png" className="w-24 h-24 object-contain mx-auto mb-2" alt="MAKI Logo" />
         <h1 className="font-display-logo text-display-logo text-primary tracking-widest uppercase">MAKI</h1>
         <p className="font-label-lg text-label-lg text-on-surface-variant uppercase mt-2 tracking-wider">Plataforma Educativa · CEBE</p>
       </div>
