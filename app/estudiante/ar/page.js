@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 
 const OBJETOS = [
@@ -9,323 +9,226 @@ const OBJETOS = [
   { emoji: "☀️", nombre: "Sol",      desc: "Estrella que nos da luz y calor cada día." },
   { emoji: "📚", nombre: "Libro",    desc: "Con cada libro aprendemos cosas nuevas." },
   { emoji: "🎸", nombre: "Guitarra", desc: "Instrumento musical de cuerdas." },
-  { emoji: "💧", nombre: "Agua",     desc: "Líquido esencial para toda vida en la Tierra." },
+  { emoji: "💧", nombre: "Agua",     desc: "Líquido esencial para toda vida." },
   { emoji: "🌳", nombre: "Árbol",    desc: "Planta que da sombra y produce oxígeno." },
   { emoji: "🏠", nombre: "Casa",     desc: "Lugar donde vivimos con nuestra familia." },
 ];
 
 export default function ARPage() {
-  const [camaraActiva, setCamaraActiva] = useState(false);
-  const [error, setError] = useState("");
-  const [cargando, setCargando] = useState(false);
-  const [deteccion, setDeteccion] = useState(null); // objeto detectado actualmente
-  const [aprendidas, setAprendidas] = useState(0);
-
-  const videoRef  = useRef(null);
+  const videoRef = useRef(null);
   const streamRef = useRef(null);
-  const timerRef  = useRef(null);
-  const detTimerRef = useRef(null);
+  const intervalRef = useRef(null);
 
-  // ── Activar cámara ──────────────────────────────────────────────────────────
-  const activarCamara = async () => {
+  const [activa, setActiva] = useState(false);
+  const [error, setError] = useState("");
+  const [deteccion, setDeteccion] = useState(null);
+  const [puntos, setPuntos] = useState(0);
+
+  const activarCamara = () => {
     setError("");
-    setCargando(true);
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: false,
-      });
-      streamRef.current = stream;
-
-      // El elemento <video> ya está en el DOM — asignamos directamente
-      const vid = videoRef.current;
-      vid.srcObject = stream;
-      await vid.play();
-
-      setCamaraActiva(true);
-
-      // Detección simulada cada 3 segundos
-      timerRef.current = setInterval(() => {
-        const obj = OBJETOS[Math.floor(Math.random() * OBJETOS.length)];
-        setDeteccion(obj);
-        // Ocultar después de 2.5 s
-        clearTimeout(detTimerRef.current);
-        detTimerRef.current = setTimeout(() => setDeteccion(null), 2500);
-      }, 3000);
-
-    } catch (err) {
-      if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
-        setError("Permiso denegado. Activa la cámara en Ajustes → Permisos del navegador.");
-      } else if (err.name === "NotFoundError") {
-        setError("No se encontró cámara en este dispositivo.");
-      } else {
-        setError("Error al abrir la cámara: " + err.message);
-      }
-    } finally {
-      setCargando(false);
-    }
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        streamRef.current = stream;
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+        setActiva(true);
+        // Simular detección cada 3 segundos
+        intervalRef.current = setInterval(() => {
+          const obj = OBJETOS[Math.floor(Math.random() * OBJETOS.length)];
+          setDeteccion(obj);
+          setTimeout(() => setDeteccion(null), 2500);
+        }, 3000);
+      })
+      .catch(err => setError("No se pudo abrir la cámara: " + err.message));
   };
 
-  // ── Cerrar cámara ──────────────────────────────────────────────────────────
-  const cerrarCamara = () => {
-    clearInterval(timerRef.current);
-    clearTimeout(detTimerRef.current);
+  const cerrar = () => {
+    clearInterval(intervalRef.current);
     streamRef.current?.getTracks().forEach(t => t.stop());
-    streamRef.current = null;
-    if (videoRef.current) videoRef.current.srcObject = null;
-    setCamaraActiva(false);
+    videoRef.current.srcObject = null;
+    setActiva(false);
     setDeteccion(null);
   };
 
-  const aprendi = () => {
-    setAprendidas(n => n + 1);
-    clearTimeout(detTimerRef.current);
-    setDeteccion(null);
-  };
-
-  // Limpieza al desmontar
   useEffect(() => {
     return () => {
-      clearInterval(timerRef.current);
-      clearTimeout(detTimerRef.current);
+      clearInterval(intervalRef.current);
       streamRef.current?.getTracks().forEach(t => t.stop());
     };
   }, []);
 
   return (
-    <div style={{ minHeight: "100svh", background: "#000", color: "#fff", fontFamily: "sans-serif", overflowX: "hidden" }}>
+    <div style={{ position: "fixed", inset: 0, background: "#000", overflow: "hidden" }}>
 
-      {/* ── VIDEO — siempre en el DOM para que videoRef.current sea válido ── */}
+      {/* VIDEO — siempre en el DOM */}
       <video
         ref={videoRef}
         playsInline
         muted
-        autoPlay
         style={{
-          position: "fixed",
+          position: "absolute",
           inset: 0,
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          display: camaraActiva ? "block" : "none",
-          zIndex: 1,
+          display: activa ? "block" : "none",
         }}
       />
 
-      {/* ═══════════════════════════════════════
-          PANTALLA DE INICIO (sin cámara)
-      ═══════════════════════════════════════ */}
-      {!camaraActiva && (
+      {/* PANTALLA DE INICIO */}
+      {!activa && (
         <div style={{
-          minHeight: "100svh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "24px",
-          gap: "24px",
-          background: "linear-gradient(160deg, #0f172a, #1e3a5f)",
+          position: "absolute", inset: 0,
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          gap: 24, padding: 24,
         }}>
-          {/* Volver */}
           <Link href="/estudiante/menu" style={{
-            position: "absolute", top: 16, left: 16,
-            color: "#7dd3fc", textDecoration: "none", fontSize: 14,
-            display: "flex", alignItems: "center", gap: 4,
+            position: "absolute", top: 20, left: 20,
+            color: "#7dd3fc", textDecoration: "none",
+            display: "flex", alignItems: "center", gap: 4, fontSize: 14,
           }}>
-            <span className="material-symbols-outlined" style={{ fontSize: 20 }}>arrow_back</span>
-            Volver
+            ← Volver
           </Link>
 
-          <div style={{ textAlign: "center", maxWidth: 360 }}>
-            <div style={{ fontSize: 72, marginBottom: 12 }}>🪄</div>
-            <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 8px", color: "#7dd3fc" }}>
-              Módulo AR
-            </h1>
-            <p style={{ fontSize: 15, color: "#94a3b8", lineHeight: 1.5, margin: 0 }}>
-              Apunta la cámara a las tarjetas impresas y descubre los objetos con realidad aumentada.
-            </p>
-          </div>
+          <div style={{ fontSize: 64 }}>🪄</div>
+          <h1 style={{ color: "#fff", fontSize: 26, fontWeight: 900, margin: 0, textAlign: "center" }}>
+            Módulo AR
+          </h1>
+          <p style={{ color: "#94a3b8", fontSize: 15, margin: 0, textAlign: "center", maxWidth: 300 }}>
+            Apunta la cámara a las tarjetas y descubre los objetos.
+          </p>
 
-          {/* Objetos disponibles */}
-          <div style={{
-            display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 8, width: "100%", maxWidth: 320,
-          }}>
-            {OBJETOS.map(o => (
-              <div key={o.nombre} style={{
-                background: "rgba(255,255,255,0.07)", borderRadius: 12,
-                padding: "10px 4px", textAlign: "center",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}>
-                <div style={{ fontSize: 32 }}>{o.emoji}</div>
-                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{o.nombre}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Error */}
           {error && (
-            <div style={{
-              background: "#450a0a", border: "1px solid #dc2626",
-              borderRadius: 12, padding: "12px 16px",
-              fontSize: 14, color: "#fca5a5", maxWidth: 340, textAlign: "center",
-            }}>
+            <p style={{ color: "#fca5a5", fontSize: 14, textAlign: "center", maxWidth: 320 }}>
               ⚠️ {error}
-            </div>
+            </p>
           )}
 
-          {/* Botón principal */}
           <button
             onClick={activarCamara}
-            disabled={cargando}
             style={{
-              background: cargando ? "#1e40af" : "#2563eb",
-              color: "#fff", border: "none",
-              borderRadius: 20, padding: "18px 40px",
-              fontSize: 20, fontWeight: 900, cursor: cargando ? "not-allowed" : "pointer",
-              boxShadow: "0 6px 0 #1e3a8a",
-              display: "flex", alignItems: "center", gap: 10,
-              transition: "transform 0.1s",
+              background: "#2563eb", color: "#fff",
+              border: "none", borderRadius: 16,
+              padding: "16px 36px", fontSize: 20,
+              fontWeight: 900, cursor: "pointer",
             }}
-            onMouseDown={e => e.currentTarget.style.transform = "translateY(4px)"}
-            onMouseUp={e => e.currentTarget.style.transform = ""}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: 28, fontVariationSettings: "'FILL' 1" }}>
-              {cargando ? "progress_activity" : "photo_camera"}
-            </span>
-            {cargando ? "Activando cámara..." : "ACTIVAR CÁMARA AR"}
+            📷 ACTIVAR CÁMARA
           </button>
-
-          <p style={{ fontSize: 12, color: "#475569", textAlign: "center", maxWidth: 280 }}>
-            El navegador pedirá permiso para usar la cámara. Acepta para continuar.
-          </p>
         </div>
       )}
 
-      {/* ═══════════════════════════════════════
-          OVERLAY AR (encima del video real)
-      ═══════════════════════════════════════ */}
-      {camaraActiva && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 10,
-          display: "flex", flexDirection: "column",
-          pointerEvents: "none",
-        }}>
+      {/* OVERLAY AR (sobre el video real) */}
+      {activa && (
+        <div style={{ position: "absolute", inset: 0, zIndex: 10, pointerEvents: "none" }}>
+
           {/* Barra superior */}
           <div style={{
-            pointerEvents: "auto",
+            position: "absolute", top: 0, left: 0, right: 0,
             display: "flex", justifyContent: "space-between", alignItems: "center",
             padding: "12px 16px",
-            background: "linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)",
+            background: "linear-gradient(to bottom, rgba(0,0,0,0.55), transparent)",
+            pointerEvents: "auto",
           }}>
-            <button onClick={cerrarCamara} style={{
-              background: "rgba(0,0,0,0.5)", color: "#fff", border: "none",
-              borderRadius: "50%", width: 44, height: 44, cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <span className="material-symbols-outlined" style={{ fontSize: 24 }}>close</span>
-            </button>
-
-            <div style={{
+            <button onClick={cerrar} style={{
+              background: "rgba(0,0,0,0.5)", color: "#fff",
+              border: "none", borderRadius: "50%",
+              width: 44, height: 44, cursor: "pointer", fontSize: 20,
+            }}>✕</button>
+            <span style={{
               background: "rgba(0,0,0,0.5)", color: "#fff",
               borderRadius: 20, padding: "6px 14px", fontSize: 14, fontWeight: 700,
             }}>
-              ⭐ {aprendidas} aprendidas
-            </div>
+              ⭐ {puntos} aprendidas
+            </span>
           </div>
 
-          {/* Marco de detección centrado */}
+          {/* Marco de detección (cuando no hay tarjeta detectada) */}
           {!deteccion && (
             <div style={{
-              flex: 1, display: "flex", flexDirection: "column",
-              alignItems: "center", justifyContent: "center", gap: 16,
+              position: "absolute", inset: 0,
+              display: "flex", alignItems: "center", justifyContent: "center",
             }}>
-              {/* Reticle */}
               <div style={{ position: "relative", width: 200, height: 200 }}>
-                {/* Esquinas */}
+                {/* Esquinas del marco */}
                 {[
                   { top: 0, left: 0, borderTop: "4px solid #fff", borderLeft: "4px solid #fff" },
                   { top: 0, right: 0, borderTop: "4px solid #fff", borderRight: "4px solid #fff" },
                   { bottom: 0, left: 0, borderBottom: "4px solid #fff", borderLeft: "4px solid #fff" },
                   { bottom: 0, right: 0, borderBottom: "4px solid #fff", borderRight: "4px solid #fff" },
-                ].map((style, i) => (
-                  <div key={i} style={{
-                    position: "absolute", width: 40, height: 40,
-                    borderRadius: 2, ...style,
-                  }} />
+                ].map((s, i) => (
+                  <div key={i} style={{ position: "absolute", width: 40, height: 40, ...s }} />
                 ))}
-                <div style={{ textAlign: "center", color: "#fff", fontSize: 13, opacity: 0.85 }}>
-                  <div style={{ fontSize: 28, marginBottom: 4, animation: "pulse 2s infinite" }}>📡</div>
-                  Buscando tarjeta...
+                <div style={{
+                  position: "absolute", inset: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "rgba(255,255,255,0.8)", fontSize: 13, textAlign: "center",
+                }}>
+                  Apunta la tarjeta aquí
                 </div>
               </div>
             </div>
           )}
 
-          {/* ── Objeto detectado ── */}
+          {/* Tarjeta detectada */}
           {deteccion && (
             <div style={{
-              flex: 1, display: "flex", flexDirection: "column",
+              position: "absolute", inset: 0,
+              display: "flex", flexDirection: "column",
               alignItems: "center", justifyContent: "center",
+              background: "rgba(0,0,0,0.35)",
               pointerEvents: "auto",
             }}>
-              {/* Emoji flotante */}
               <div style={{
-                fontSize: 120, lineHeight: 1, marginBottom: 16,
-                filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.7))",
+                fontSize: 120, lineHeight: 1, marginBottom: 20,
+                filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.6))",
                 animation: "flotar 1.2s ease-in-out infinite alternate",
               }}>
                 {deteccion.emoji}
               </div>
 
-              {/* Card informativa */}
               <div style={{
-                background: "rgba(255,255,255,0.97)",
-                borderRadius: 24, padding: "20px 24px",
-                width: "calc(100% - 48px)", maxWidth: 340,
+                background: "#fff", borderRadius: 24,
+                padding: "20px 28px", maxWidth: 320, width: "calc(100% - 48px)",
                 textAlign: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
               }}>
-                <h2 style={{ fontSize: 28, fontWeight: 900, color: "#1e293b", margin: "0 0 6px" }}>
+                <h2 style={{ fontSize: 28, fontWeight: 900, color: "#1e293b", margin: "0 0 8px" }}>
                   {deteccion.nombre}
                 </h2>
-                <p style={{ fontSize: 15, color: "#64748b", margin: "0 0 16px", lineHeight: 1.5 }}>
+                <p style={{ color: "#64748b", fontSize: 15, margin: "0 0 16px", lineHeight: 1.5 }}>
                   {deteccion.desc}
                 </p>
-                <button onClick={aprendi} style={{
-                  width: "100%", padding: "14px", borderRadius: 16,
-                  background: "#16a34a", color: "#fff", border: "none",
-                  fontSize: 18, fontWeight: 900, cursor: "pointer",
-                  boxShadow: "0 4px 0 #15803d",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                <button onClick={() => { setPuntos(p => p + 1); setDeteccion(null); }} style={{
+                  width: "100%", padding: 14, borderRadius: 14,
+                  background: "#16a34a", color: "#fff",
+                  border: "none", fontSize: 18, fontWeight: 900, cursor: "pointer",
                 }}>
-                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  ¡Lo aprendí! +1⭐
+                  ⭐ ¡Lo aprendí! +1
                 </button>
               </div>
             </div>
           )}
 
-          {/* Barra inferior */}
-          <div style={{
-            padding: "16px", textAlign: "center",
-            background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
-          }}>
-            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: 0 }}>
-              {deteccion ? "¡Tarjeta detectada!" : "Apunta la cámara hacia una tarjeta impresa"}
-            </p>
-          </div>
+          {/* Instrucción inferior */}
+          {!deteccion && (
+            <div style={{
+              position: "absolute", bottom: 0, left: 0, right: 0,
+              padding: "16px", textAlign: "center",
+              background: "linear-gradient(to top, rgba(0,0,0,0.55), transparent)",
+            }}>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, margin: 0 }}>
+                La cámara está activa — esperando tarjeta...
+              </p>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Animaciones */}
       <style>{`
         @keyframes flotar {
-          from { transform: translateY(0) scale(1); }
-          to   { transform: translateY(-18px) scale(1.06); }
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
+          from { transform: translateY(0); }
+          to   { transform: translateY(-16px); }
         }
       `}</style>
     </div>
