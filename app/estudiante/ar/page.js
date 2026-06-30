@@ -1,3 +1,4 @@
+// AR v2 - camara real
 "use client";
 import { useRef, useState } from "react";
 
